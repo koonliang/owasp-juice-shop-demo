@@ -1,0 +1,1440 @@
+================================================================================
+DEVSECOPS PIPELINE WITH CLAUDE CODE CLI + OWASP JUICE SHOP
+ENHANCED SECURITY TRAINING - 3-4 HOUR SESSION
+
+  🎓 Training Value Proposition
+
+  Trainees will:
+  1. Master pipeline evolution: Simple → Secure → Mature (real-world approach)
+  2. Deploy working pipeline FIRST, then enhance (no complexity paralysis)
+  3. Set up local Kubernetes cluster with Kind (production-like environment)
+  4. Deploy GitHub Actions self-hosted runner in Kubernetes
+  5. Automate K8s deployment with intelligent slash commands
+  6. Fix common deployment issues (kubectl auto-install, port mappings)
+  7. Complete CI/CD automation: git push → GitHub Actions → Deploy to K8s
+  8. Exploit vulnerabilities in Juice Shop (understand attacker mindset)
+  9. Analyze vulnerable code with Claude Code CLI
+  10. Build complete DevSecOps pipeline incrementally
+  11. Automate security scanning and workflows
+  12. Use slash commands for operational automation
+
+  📊 Complete Training Flow
+
+  Real-World Pipeline Evolution: Simple → Secure → Mature
+
+  ├── Part 1: Introduction & Setup
+  │   ├── STEP 1: /init-context-files - Context preservation system
+  │   ├── STEP 2: /doc-generator - Generate project documentation
+  │   ├── STEP 3: /update-doc-refs - Update CLAUDE.md index
+  │  
+  │
+  ├── Part 2: Claude Code CLI - Memory, Context & Automation
+  │   ├── DEMO 1: Context files & memory preservation
+  │   │   └── Show context files, interactive reading, explain 200K token window
+  │   ├── DEMO 2: /update-session-handoff automation
+  │   │   └── Automated session capture, update all context files
+  │
+  ├── Part 3: Deploy Simple Pipeline First!
+  │   ├─ /simple-pipeline-setup
+  │   │   What You'll Build:
+  │   │   • Basic 3-stage pipeline (Lint → Test → Build)
+  │   │   • Extend with Docker Hub push stage
+  │   │   • Working CI/CD foundation (4 stages total)
+  │   ├── Pipeline Stages:
+  │   │   1. Lint - Code quality checks (yamllint, npm run lint
+  │   │   2. Test - Run test suite (npm test)
+  │   │   3. Build - Docker image build
+  │   │   4. Push to Docker Hub - Automated image push
+  │
+  ├── Part 4: Local K8s Cluster with Kind + Automated Deployment
+  │   ├── Using Slash Commands: /kind-k8s-setup & /deploy-app-to-k8s-cluster
+  │   ├── Phase 1: Cluster Setup - /kind-k8s-setup
+  │   │   └── Steps 1-11: Cluster Infrastructure
+  │   │       • Auto-detect OS (macOS/Linux/Windows)
+  │   │       • Install Kind and kubectl
+  │   │       • Create 3-node cluster (1 control plane + 2 workers)
+  │   │       • Deploy Kube-ops-view for monitoring
+  │   │       • Set up port forwarding (localhost:8080)
+  │   │       • Validate cluster health
+  │   │       • Test with sample deployment
+  │   │       • Create GitHub PAT for runner
+  │   │       • Store credentials in K8s secret
+  │   │       • Deploy GitHub Actions runner pod
+  │   │       • Verify runner in GitHub UI
+  │   │
+  │   ├── Phase 2: Intelligent Deployment - /deploy-app-to-k8s-cluster
+  │   │   └── Auto-Detection Features:
+  │   │       • Parse GitHub Actions workflow for Docker image
+  │   │       • Extract container port from Dockerfile
+  │   │       • Detect Kind cluster and parse config
+  │   │       • Find extraPortMappings (e.g., 30080, 30443)
+  │   │       • Identify self-hosted runner usage
+  │   │   └── Deployment Process (8 Steps):
+  │   │       1. Show auto-detected configuration
+  │   │       2. Ask only for missing info (replicas, resources)
+  │   │       3. Create K8s manifests (deployment.yaml, service.yaml)
+  │   │       4. Deploy to cluster and verify
+  │   │       5. Extend GitHub Actions workflow
+  │   │       6. Add kubectl auto-installation step
+  │   │       7. Create deployment documentation
+  │   │       8. Test end-to-end deployment
+  │   │
+  │   ├── Key Features:
+  │   │   • 3-node Kubernetes cluster (production-like)
+  │   │   • Kube-ops-view visual monitoring (http://localhost:8080)
+  │       • Juice Shop deployed and accessible at http://localhost:30080
+  │       • GitHub Actions runner active in repo
+  │
+  ├── Part 5: Security Scanning & Vulnerability Analysis
+  │   ├── Using Slash Command: /security-scan-inclusive-pipeline
+  │   │
+  │   ├── PHASE 1: Setup Enhanced Security Pipeline
+  │   │   • Archives existing pipeline to workflows-archive/
+  │   │   • Creates enhanced pipeline with 9 security stages:
+  │   │     - Stage 1: Lint
+  │   │     - Stage 2: SAST + Secret Detection + Tests (parallel)
+  │   │     - Stage 3: Security Scan (npm audit, RetireJS, Gitleaks, Dockerfile Policy)
+  │   │     - Stage 4: SonarQube Analysis (manual gate)
+  │   │     - Stage 5: Build Docker Image
+  │   │     - Stage 5b: Trivy Container Scan (security gate)
+  │   │     - Stage 6: Push to Docker Hub
+  │   │     - Stage 7: Deploy to K8s
+  │   │     - Stage 8: K8s Security (OWASP ZAP, Security Headers)
+  │   │     - Stage 9: Consolidate Security Reports
+  │   │   • Trigger pipeline run
+  │   │
+  │   ├── PHASE 2: Hands-On Vulnerability Exploitation (OWASP Top 10)
+  │   │   • Introduction to OWASP Top 10
+  │   │   • Lab 1: SQL Injection - Login bypass with ' OR 1=1--
+  │   │   • Lab 2: XSS - Reflected and Stored XSS attacks
+  │   │   • Lab 3: Broken Authentication - MD5 hashing, JWT manipulation
+  │   │   • Lab 4: Broken Access Control - IDOR vulnerabilities
+  │   │
+  │   └── PHASE 3: Review Security Scan Results
+  │       • Download consolidated security reports from GitHub Actions
+  │       • Review how each vulnerability was detected:
+  │         - SQL Injection → Detected by CodeQL (SAST), OWASP ZAP (DAST)
+  │         - XSS → Detected by CodeQL (SAST), OWASP ZAP (DAST)
+  │         - Broken Auth → Detected by CodeQL (SAST), npm audit (SCA)
+  │         - IDOR → Detected by CodeQL (SAST), OWASP ZAP (DAST)
+  │       • Analyze security dashboard (security-dashboard.html)
+  │       • Compare SAST vs DAST coverage
+  │
+  ├── Part 5B: Local Security Scanning (DAST)
+  │   ├── Using Slash Command: /dast-security-scan
+  │   │
+  │   ├── SCAN 1: Security Headers Analysis
+  │   │   • HTTP security header validation
+  │   │   • Check for CSP, HSTS, X-Frame-Options, etc.
+  │   │   • Report missing security headers
+  │   │
+  │   ├── SCAN 2: OWASP ZAP Baseline Scan (DAST)
+  │   │   • Dynamic vulnerability testing
+  │   │   • Runtime security scanning
+  │   │   • HTML report with 20-50+ findings
+  │   │
+  │   ├── SCAN 3: OWASP Noir - Attack Surface Analysis (SAST)
+  │   │   • Discover 600 API endpoints via static analysis
+  │   │   • Map complete attack surface
+  │   │   • Identify 8 risk categories (Admin, Payment, Auth, etc.)
+  │   │
+  │   └── HANDS-ON: Using Noir Results for Penetration Testing
+  │       • Review 600 discovered endpoints
+  │       • Manual testing of high-risk endpoints
+  │       • Cross-reference SAST (Noir) with DAST (ZAP) findings
+  │       • Comprehensive vulnerability assessment report
+  │
+  ├── Part 6: Advanced Security Automation
+  │   ├── Using Agent: /owasp-top10-analyzer
+  │   ├── DEMO 1: Custom security agents with Claude
+  │   │   • Automated vulnerability analysis
+  │   │   • OWASP Top 10 compliance checking
+  │   │   • Educational insights and remediation
+  │   ├── DEMO 2: Pre-commit security hooks
+  │   │   • Secret detection before commits
+  │   │   • Security-focused linting
+  │   │   • Shift-left security approach
+  │   └── DEMO 3: Continuous security monitoring
+  │       • Dependabot automation
+  │       • GitHub Advanced Security features
+  │       • CodeQL integration
+  │
+  │
+  └── Part 7: Wrap-up & Q&A
+      └── Pipeline evolution recap, resources, next steps
+
+
+
+TRAINING KICK-OFF: CONTEXT SETUP (MANDATORY FOR ALL ATTENDEES)
+===============================================================
+
+Execute these 3 slash commands IN ORDER before starting the training:
+  1. /init-context-files - Initialize context preservation system FIRST
+  2. /doc-generator - Generate comprehensive project documentation
+  3. /update-doc-refs - Update CLAUDE.md with the new documentation
+
+┌─────────────────────────────────────────────────────────────────────────────┐
+│ STEP 1: Initialize Context Preservation System                              │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+  Command: /init-context-files /path/to/owasp-juice-shop
+
+  What it does:
+  - Creates /docs directory structure for session tracking
+  - Sets up 5 context files: CURRENT_STATE.txt, SESSION_HANDOFF.txt,
+    COMMANDS_LOG.txt, DECISIONS.txt, ISSUES.txt
+  - Generates README.md with usage instructions
+
+  Why execute first:
+  - Establishes foundation for tracking training progress
+  - Enables session continuity and knowledge preservation
+  - Required by subsequent commands (creates /docs directory)
+
+
+
+┌─────────────────────────────────────────────────────────────────────────────┐
+│ STEP 2: Generate Project Documentation                                      │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+  Command: /doc-generator /path/to/owasp-juice-shop
+
+  What it does:
+  - Analyzes entire Juice Shop codebase
+  - Generates comprehensive technical documentation (500-600 lines)
+  - Covers: architecture, tech stack, commands, deployment, CI/CD
+  - Creates /docs/owasp-juice-shop.txt
+
+  Why execute second:
+  - Requires /docs directory (created in Step 1)
+  - Provides complete reference for attendees during training
+  - Documents all commands, workflows, and architecture
+
+
+┌─────────────────────────────────────────────────────────────────────────────┐
+│ STEP 3: Update CLAUDE.md Documentation Index                                │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+  Command: /update-doc-refs
+
+  What it does:
+  - Scans /docs directory for all .txt files
+  - Updates CLAUDE.md "Documents To Refer" section
+  - Creates numbered index of all documentation files
+  - Ensures Claude Code CLI knows about all available docs
+
+  Why execute:
+  - Requires documentation files to exist (created in Steps 1 & 2)
+  - Makes all docs discoverable by Claude Code CLI
+  - Enables "Read /docs/..." commands during training
+
+=
+
+
+
+PART 2: CLAUDE CODE CLI - MEMORY, CONTEXT & AUTOMATION
+================================================================================
+
+Using Slash Commands: /update-session-handoff
+Using Agent: /owasp-top10-analyzer
+
+This section demonstrates Claude Code CLI's advanced capabilities for session
+continuity, context management, and automated vulnerability analysis.
+
+Learning Objectives:
+  • Understand Claude Code CLI's context window and memory management
+  • Learn how to preserve session state across multiple training sessions
+  • Master automated session capture and handoff workflows
+  • Practice vulnerability analysis using Claude's code understanding
+  • Use Claude to analyze Juice Shop's intentional vulnerabilities
+
+
+┌─────────────────────────────────────────────────────────────────────────────┐
+│ DEMO 1: Context Files & Memory Preservation                         │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+Objective: Show how Claude Code maintains session memory using context files
+
+Step 1.1: Show Context Preservation Files
+------------------------------------------
+
+  Command to run:
+  ls -la /path/to/owasp-juice-shop/docs/
+
+  Expected output:
+  CURRENT_STATE.txt      - Current project status snapshot
+  SESSION_HANDOFF.txt    - End-of-session summaries  
+  COMMANDS_LOG.txt       - Successful commands library
+  DECISIONS.txt          - Technical decisions and rationale
+  ISSUES.txt             - Known problems and workarounds
+  README.md              - Usage guide for context files
+
+  Explain to attendees:
+  - These files act as "external memory" for Claude Code CLI
+  - Enable continuity between different training sessions
+  - Provide complete project context without re-explaining
+  - Auto-updated by /update-session-handoff command
+
+
+Step 1.2: Interactive Context Reading Demo
+-------------------------------------------
+
+  Demo Command 1:
+  "Claude, read /docs/CURRENT_STATE.txt and summarize what you understand 
+   about our current progress."
+
+  What Claude will do:
+  - Read the entire CURRENT_STATE.txt file
+  - Summarize completed work, in-progress tasks
+  - Identify next steps and blockers
+  - Show understanding of project context
+
+  Demo Command 2:
+  "Claude, read /docs/SESSION_HANDOFF.txt and tell me what we accomplished 
+   in the last session."
+
+  What Claude will do:
+  - Read the most recent session entry
+  - Summarize accomplishments from previous session
+  - List files that were modified
+  - Highlight any blockers or open questions
+
+
+Step 1.3: Explain Context Window Capacity
+------------------------------------------
+
+  Key Points to Cover:
+  
+  ✓ Context Window Size: ~200,000 tokens
+    - Equivalent to ~500 pages of text
+    - Can hold multiple files simultaneously
+    - Remembers entire conversation history
+  
+  ✓ Context Preservation Strategy:
+    - Short-term: Current conversation in memory
+    - Long-term: Context files preserve state
+    - Cross-session: Read context files to restore memory
+  
+
+
+┌─────────────────────────────────────────────────────────────────────────────┐
+│ DEMO 2: Automated Session Capture with /update-session-handoff      │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+Objective: Show how Claude automatically captures and documents session work
+
+Step 2.1: Explain the Command
+------------------------------
+
+  Slash Command: /update-session-handoff
+
+  What it does automatically:
+  ✓ Analyzes entire conversation history from current session
+  ✓ Extracts all tasks worked on
+  ✓ Identifies files created/modified (via git status)
+  ✓ Logs successful commands executed
+  ✓ Documents technical decisions made
+  ✓ Tracks issues found or fixed
+  ✓ Determines next steps
+  ✓ Updates ALL context files (CURRENT_STATE, SESSION_HANDOFF, etc.)
+
+  Key Feature: Fully autonomous - no manual note-taking required!
+
+
+
+
+
+┌─────────────────────────────────────────────────────────────────────────────┐
+│ DEMO 3: OWASP Top 10 Analysis with Security Agent ⭐ HANDS-ON       │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+Objective: Demonstrate automated security analysis using Claude's OWASP Top 10 Agent
+
+Agent to Use: /owasp-top10-analyzer
+Location: /Users/rupeshpanwar/.claude/agents/owasp-top10-analyzer.md
+
+
+Demo 3.1: Full OWASP Top 10 Scan (Comprehensive Analysis)
+----------------------------------------------------------
+
+  Command:
+  "Analyze this codebase for all OWASP Top 10 vulnerabilities with
+   educational insights"
+
+  Agent: /owasp-top10-analyzer
+
+  What the agent will do:
+  ✓ Systematically analyze all 10 OWASP categories
+  ✓ Search for vulnerabilities in routes/, models/, lib/
+  ✓ Generate comprehensive security report
+  ✓ Provide CVSS scores for each finding
+  ✓ Map to CWE (Common Weakness Enumeration)
+  ✓ Include educational explanations
+  ✓ Suggest fixes with code examples
+
+  Expected Report Structure:
+
+  # OWASP Top 10 (2021) Analysis Report
+  Project: OWASP Juice Shop
+  Date: [Timestamp]
+  Analyzed by: Claude Security Agent
+
+  ## Summary Dashboard
+
+  | OWASP Category             | Status | Findings | Severity |
+  |----------------------------|--------|----------|----------|
+  | A01: Broken Access Control | 🔴 FAIL| 5        | High     |
+  | A02: Cryptographic Failures| 🔴 FAIL| 3        | Critical |
+  | A03: Injection             | 🔴 FAIL| 7        | Critical |
+  | A04: Insecure Design       | 🟡 WARN| 2        | Medium   |
+  | A05: Security Config       | 🔴 FAIL| 4        | High     |
+  | A06: Vulnerable Components | 🟡 WARN| 12       | Medium   |
+  | A07: Auth Failures         | 🔴 FAIL| 4        | High     |
+  | A08: Data Integrity        | 🟢 PASS| 0        | N/A      |
+  | A09: Logging Failures      | 🟡 WARN| 3        | Low      |
+  | A10: SSRF                  | 🟢 PASS| 0        | N/A      |
+
+  Overall Security Grade: F (Critical)
+
+
+Demo 3.2: Focus on Specific Vulnerability Category
+---------------------------------------------------
+
+  Command:
+  "Analyze for A03 (Injection) vulnerabilities only in educational mode"
+
+  Agent: /owasp-top10-analyzer
+
+  What the agent will demonstrate:
+  ✓ Deep dive into Injection vulnerabilities
+  ✓ SQL Injection in routes/login.ts
+  ✓ Command Injection (if exists)
+  ✓ Template Injection patterns
+  ✓ Detailed exploitation scenarios
+  ✓ Step-by-step fix recommendations
+
+  Expected Output Example:
+
+  A03: INJECTION
+  Status: VULNERABLE
+  Findings: 7
+
+  Example 1: SQL Injection in routes/login.ts:23
+    Code: db.query('SELECT * FROM Users WHERE email = "' + email + '"')
+    Issue: User input directly concatenated into SQL
+    CVSS: 9.8 (Critical)
+    CWE: CWE-89 (SQL Injection)
+
+    Education: Never concatenate user input into SQL queries.
+    Use parameterized queries or ORMs with input binding.
+
+    Exploit: email = admin' OR '1'='1
+    Fix: db.query('SELECT * FROM Users WHERE email = ?', [email])
+
+
+
+================================================================================
+
+PART 3: DEPLOY SIMPLE PIPELINE FIRST!
+================================================================================
+
+Using Slash Command: /simple-pipeline-setup
+
+Philosophy: Get it working before adding complexity
+
+Execute slash command to build 4-stage CI/CD pipeline:
+
+┌─────────────────────────────────────────────────────────────────────────────┐
+│ STEP 1: Create Basic 3-Stage Pipeline                                       │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+  Command: /simple-pipeline-setup
+
+  What it does:
+  - Analyzes your repository structure
+  - Creates .github/workflows/simple-pipeline.yml
+  - Sets up 3 stages: Lint → Test → Build
+  - Uses yamllint for YAML validation
+  - Uses npm run lint for code quality
+  - Uses npm test for automated testing
+  - Builds Docker image
+
+  Stage 1: Lint
+    • yamllint for configuration files
+    • npm run lint for JavaScript/TypeScript
+
+  Stage 2: Test
+    • npm test (runs full test suite)
+    • Depends on lint passing
+
+  Stage 3: Build
+    • docker build to create image
+    • Depends on tests passing
+
+
+
+┌─────────────────────────────────────────────────────────────────────────────┐
+│ STEP 2: Extend with Docker Hub Push Stage                                   │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+  Command continues to:
+  - Add Docker Hub integration
+  - Configure secrets (DOCKER_USERNAME, DOCKER_TOKEN)
+  - Add Stage 4: Push to Docker Hub
+  - Set up job dependencies (needs: [build])
+
+  Stage 4: Push to Docker Hub
+    • Login to Docker Hub
+    • Tag image with latest
+    • Push to registry
+    • Only runs on main branch
+
+
+
+┌─────────────────────────────────────────────────────────────────────────────┐
+│ STEP 3: Commit and Test Pipeline                                            │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+  Trainee actions:
+  - git add .github/workflows/simple-pipeline.yml
+  - git commit -m "Add 4-stage CI pipeline"
+  - git push origin main
+
+  Verify in GitHub:
+  - Navigate to Actions tab
+  - Watch pipeline execute: lint → test → build → push
+  - Verify Docker image on Docker Hub
+
+
+
+SUCCESS CRITERIA
+================
+✅ 4-stage pipeline created and running
+✅ All stages passing (green checks)
+✅ Docker image pushed to Docker Hub
+✅ Understanding of job dependencies
+✅ Pipeline triggers on every push to main
+
+Output: Docker image at dockerhub.com/r/<username>/owasp-juice-shop:latest
+
+
+PART 4: LOCAL K8S CLUSTER WITH KIND + AUTOMATED DEPLOYMENT
+================================================================================
+
+Using Slash Commands: /kind-k8s-setup & /deploy-app-to-k8s-cluster
+
+Build production-like local K8s environment with automated deployments
+
+Execute slash commands to create cluster and deploy application:
+
+
+PHASE 1: CLUSTER SETUP
+================================
+
+┌─────────────────────────────────────────────────────────────────────────────┐
+│ STEP 1-11: Create 3-Node Kind Cluster                                       │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+  Command: /kind-k8s-setup
+
+  What it does automatically:
+  - Detects OS (macOS/Linux/Windows)
+  - Installs Kind CLI
+  - Installs kubectl CLI
+  - Creates kind-k8s-cluster/kind-cluster-config.yaml
+  - Creates 3-node cluster (1 control plane + 2 workers)
+  - Configures port mappings (30080, 30443)
+  - Deploys Kube-ops-view for monitoring
+  - Sets up port forwarding (localhost:8080)
+  - Validates cluster health
+  - Tests with sample deployment
+  - Generates kind-k8s-cluster/kind-cluster-info.txt
+
+  Cluster Configuration:
+  • Name: devsecops-cluster
+  • Nodes: 3 (1 control plane + 2 workers)
+  • K8s version: v1.27.3
+  • Monitoring: http://localhost:8080 (Kube-ops-view)
+  • Port mappings: localhost:30080 → NodePort 30080
+                   localhost:30443 → NodePort 30443
+
+  Verification commands:
+  • kubectl get nodes (should show 3 nodes Ready)
+  • kubectl get pods -A (all system pods Running)
+  • Open browser: http://localhost:8080 (cluster visualization)
+
+
+
+┌─────────────────────────────────────────────────────────────────────────────┐
+│ STEP 12-15: Deploy GitHub Actions Runner (OPTIONAL)                         │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+  Command continues to:
+  - Guide GitHub PAT creation (repo + workflow scopes)
+  - Create K8s secret with credentials
+  - Deploy runner pod to cluster
+  - Verify runner registration in GitHub
+
+  What it creates:
+  • Kubernetes secret: github-runner-secret
+  • Runner deployment: kind-k8s-cluster/github-runner.yaml
+  • ServiceAccount with RBAC permissions
+  • Runner pod with kubectl access
+
+  Verification:
+  • kubectl get pods -l app=github-runner (Running)
+  • Check GitHub: Settings → Actions → Runners
+  • See: kind-cluster-runner (🟢 Idle)
+
+
+
+PHASE 2: INTELLIGENT DEPLOYMENT
+=========================================
+
+┌─────────────────────────────────────────────────────────────────────────────┐
+│ STEP 1-8: Deploy Application with Auto-Detection                            │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+  Command: /deploy-app-to-k8s-cluster
+
+  Auto-detects:
+  ✅ Docker image from .github/workflows/*.yml
+  ✅ Container port from Dockerfile (EXPOSE)
+  ✅ Kind cluster and configuration
+  ✅ Available NodePorts from kind-cluster-config.yaml
+  ✅ Self-hosted runner usage
+
+  Asks only:
+  ❓ Number of replicas (default: 1)
+  ❓ Resource limits (default: 512Mi RAM, 0.5 CPU)
+
+  What it does:
+  - Creates k8s/juice-shop-deployment.yaml
+  - Creates k8s/juice-shop-service.yaml (NodePort 30080)
+  - Deploys to cluster: kubectl apply -f k8s/
+  - Waits for rollout: kubectl rollout status
+  - Extends GitHub Actions workflow with deploy stage
+  - Adds kubectl auto-installation step (prevents exit 127)
+  - Creates deployment documentation
+
+  Intelligent Features:
+  • Only suggests NodePorts from Kind config (not 30000!)
+  • Auto-installs kubectl on self-hosted runners
+  • Detects and reuses pipeline variables
+  • Adds proper job dependencies (needs: [push-to-dockerhub])
+
+  Stage 5: Deploy to K8s
+    • Checkout code
+    • Install kubectl (if not present)
+    • Apply K8s manifests
+    • Update deployment image
+    • Wait for rollout completion
+
+
+
+┌─────────────────────────────────────────────────────────────────────────────┐
+│ TEST: End-to-End CI/CD Pipeline                                             │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+  Trainee actions:
+  - Make code change
+  - git commit and push
+  - Watch full pipeline: lint → test → build → push → deploy
+
+  Pipeline Flow:
+  Developer commits code
+         ↓
+  GitHub Actions triggered
+         ↓
+  Stage 1: Lint (yamllint, npm lint)
+         ↓
+  Stage 2: Test (npm test)
+         ↓
+  Stage 3: Build (docker build)
+         ↓
+  Stage 4: Push (Docker Hub)
+         ↓
+  Stage 5: Deploy (kubectl to Kind) ★ NEW
+         ↓
+  App updated: http://localhost:30080
+
+
+
+SUCCESS CRITERIA
+================
+✅ 3-node Kind cluster running
+✅ Kube-ops-view accessible at http://localhost:8080
+✅ GitHub Actions runner registered and active
+✅ Juice Shop deployed at http://localhost:30080
+✅ 5-stage pipeline: lint → test → build → push → deploy
+✅ Auto-deployment on every git push
+✅ kubectl auto-installs on runner (no exit 127 errors)
+✅ NodePort matches Kind config (30080, not 30000)
+
+
+
+PART 5: SECURITY SCANNING & VULNERABILITY ANALYSIS
+================================================================================
+
+Using Slash Command: /security-scan-inclusive-pipeline
+
+Complete security workflow: Setup Pipeline → Exploit Vulnerabilities → Review Detections
+
+
+PHASE 1: SETUP ENHANCED SECURITY PIPELINE
+==========================================
+
+┌─────────────────────────────────────────────────────────────────────────────┐
+│ STEP 1: Run Security Scan Pipeline Setup                                    │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+  Command: /security-scan-inclusive-pipeline
+
+  What it does:
+  - Reads docs/juice-shop-app.txt for project analysis
+  - Detects technology stack (Node.js, Angular, Docker, K8s)
+  - Finds existing pipeline (.github/workflows/simple-pipeline.yml)
+  - Archives existing pipeline to .github/workflows-archive/
+  - Creates .github/workflows/enhanced-pipeline.yml
+
+
+
+┌─────────────────────────────────────────────────────────────────────────────┐
+│ STEP 2: Review Enhanced Pipeline Structure                                  │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+  Pipeline Transformation:
+
+  Before (Simple Pipeline):
+  Lint → Test → Build → Push → Deploy (5 stages)
+
+  After (Enhanced with Security - 9 stages):
+  Stage 1: Lint
+  Stage 2: SAST + Secret Detection + Tests (parallel)
+  Stage 3: Security Scan (npm-audit, RetireJS, Gitleaks, Dockerfile Policy)
+  Stage 4: SonarQube Analysis (manual gate)
+  Stage 5: Build Docker Image
+  Stage 5b: Trivy Container Scan (security gate before push)
+  Stage 6: Push to Docker Hub
+  Stage 7: Deploy to K8s
+  Stage 8: K8s Security (DAST with OWASP ZAP, Security Headers)
+  Stage 9: Consolidate Security Reports
+
+  Security Tools Integrated:
+
+  SAST (Static Analysis):
+  • CodeQL - Code security scanning
+  • npm audit - Dependency vulnerabilities
+
+  Secret Detection:
+  • TruffleHog - Git history secret scanning
+  • Gitleaks - Comprehensive secret detection
+
+  SCA (Software Composition Analysis):
+  • npm audit - Known vulnerable dependencies
+  • RetireJS - JavaScript library vulnerabilities
+
+  Container Security:
+  • Trivy - Container image scanning (OS packages, app dependencies)
+
+  Policy as Code:
+  • OPA/Conftest - Dockerfile security policies
+  • K8s manifest security validation
+
+  DAST (Dynamic Analysis):
+  • OWASP ZAP - Runtime vulnerability scanning
+  • Security Headers - HTTP header analysis
+
+  Code Quality:
+  • SonarQube - Code quality + security (manual gate)
+
+
+
+┌─────────────────────────────────────────────────────────────────────────────┐
+│ STEP 3: Trigger Enhanced Pipeline                                           │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+  Trainee actions:
+  - git add .github/workflows/enhanced-pipeline.yml
+  - git commit -m "Add security scanning to pipeline"
+  - git push origin main
+
+  Watch in GitHub Actions:
+  - All 9 stages execute
+  - Security scans run in parallel (Stage 2 & 3)
+  - Vulnerabilities detected (expected for Juice Shop)
+  - Pipeline completes (warning mode)
+  - Consolidated report generated
+
+  Note: Pipeline runs in background while we continue with labs
+
+
+
+PHASE 2: HANDS-ON VULNERABILITY EXPLOITATION
+=============================================
+
+┌─────────────────────────────────────────────────────────────────────────────┐
+│ Introduction to OWASP Top 10                                                │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+  Trainer Overview:
+  - OWASP Top 10: Most critical web application security risks
+  - Focus on 4 vulnerability classes in this training:
+    • A03: Injection (SQL Injection)
+    • A07: Identification and Authentication Failures (Broken Auth)
+    • A01: Broken Access Control (IDOR)
+    • A03: Injection (XSS - Cross-Site Scripting)
+
+  Access Juice Shop:
+  - http://localhost:30080
+  - Intentionally vulnerable for training
+  - 100+ security challenges built-in
+
+
+
+┌─────────────────────────────────────────────────────────────────────────────┐
+│ LAB 1: SQL Injection - Login Bypass                                         │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+  Exploit:
+  1. Open http://localhost:30080/#/login
+  2. Email field: admin' OR '1'='1'--
+  3. Password: anything
+  4. Click Login
+  5. Result: Logged in as admin without knowing password
+
+  What happened:
+  - SQL query: SELECT * FROM Users WHERE email='admin' OR '1'='1'--' AND password='...'
+  - OR '1'='1' always true
+  - -- comments out password check
+  - Authentication bypassed
+
+  Detection (we'll verify in Phase 3):
+  - SAST: CodeQL detects SQL injection in code
+  - DAST: OWASP ZAP detects during runtime testing
+
+
+
+┌─────────────────────────────────────────────────────────────────────────────┐
+│ LAB 2: XSS - Cross-Site Scripting                                           │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+  Reflected XSS:
+  1. Search box: <script>alert('XSS')</script>
+  2. Result: Popup appears (script executed)
+
+  Stored XSS:
+  1. Navigate to Product Reviews
+  2. Review text: <iframe src="javascript:alert('XSS')">
+  3. Submit review
+  4. Result: Every user sees the XSS payload
+
+  What happened:
+  - User input not sanitized
+  - HTML/JavaScript rendered directly in browser
+  - Can steal cookies, session tokens
+
+  Detection (we'll verify in Phase 3):
+  - SAST: CodeQL detects unsafe HTML rendering
+  - DAST: OWASP ZAP tests XSS payloads
+
+
+
+┌─────────────────────────────────────────────────────────────────────────────┐
+│ LAB 3: Broken Authentication - MD5 Hashing, JWT                             │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+  MD5 Hash Weakness:
+  - Juice Shop uses MD5 for password hashing
+  - MD5 is cryptographically broken
+  - Rainbow tables can crack MD5 hashes
+
+  JWT Token Manipulation:
+  1. Login to Juice Shop
+  2. Open Browser DevTools → Application → Cookies
+  3. Find JWT token
+  4. Decode on jwt.io
+  5. Modify payload (e.g., change role)
+  6. Re-sign with weak secret (0 stars rating challenge)
+
+  Detection (we'll verify in Phase 3):
+  - SAST: CodeQL detects weak crypto (MD5)
+  - SCA: npm audit flags old jsonwebtoken library
+
+
+
+┌─────────────────────────────────────────────────────────────────────────────┐
+│ LAB 4: Broken Access Control - IDOR                                         │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+  Insecure Direct Object Reference (IDOR):
+  1. Login as any user
+  2. Access basket: http://localhost:30080/rest/basket/1
+  3. Change ID to 2: http://localhost:30080/rest/basket/2
+  4. Result: View another user's shopping basket
+
+  What happened:
+  - No authorization check on basket ID
+  - Can access any user's data by changing ID
+  - Common in APIs with sequential IDs
+
+  Detection (we'll verify in Phase 3):
+  - SAST: CodeQL detects missing authorization checks
+  - DAST: OWASP ZAP tests IDOR patterns
+
+
+
+PHASE 3: REVIEW SECURITY SCAN RESULTS
+======================================
+
+┌─────────────────────────────────────────────────────────────────────────────┐
+│ STEP 1: Download Consolidated Security Reports                              │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+  Access Reports:
+  1. Navigate to GitHub Actions
+  2. Click on latest workflow run
+  3. Scroll to Artifacts section
+  4. Download: consolidated-security-reports.zip
+  5. Extract and open: security-dashboard.html
+
+
+
+┌─────────────────────────────────────────────────────────────────────────────┐
+│ STEP 2: Verify Vulnerability Detections                                     │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+  Review security-dashboard.html:
+
+  SQL Injection:
+  - ✅ CodeQL (SAST): Found SQL injection in routes/login.ts
+  - ✅ OWASP ZAP (DAST): Detected injectable parameters
+  - Severity: Critical (CVSS 9.8)
+
+  XSS (Cross-Site Scripting):
+  - ✅ CodeQL (SAST): Unsafe HTML rendering detected
+  - ✅ OWASP ZAP (DAST): XSS payloads successfully injected
+  - Severity: High (CVSS 7.5)
+
+  Broken Authentication:
+  - ✅ CodeQL (SAST): MD5 hashing detected (weak crypto)
+  - ✅ npm audit (SCA): Old jsonwebtoken library flagged
+  - Severity: High (CVSS 7.0)
+
+  Broken Access Control (IDOR):
+  - ✅ CodeQL (SAST): Missing authorization checks
+  - ✅ OWASP ZAP (DAST): IDOR patterns detected
+  - Severity: High (CVSS 7.0)
+
+
+
+┌─────────────────────────────────────────────────────────────────────────────┐
+│ STEP 3: Compare SAST vs DAST Coverage                                       │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+  SAST (Static Analysis) - Code Review:
+  Strengths:
+  - Finds vulnerabilities early (before deployment)
+  - Can identify all code paths
+  - No need for running application
+  - Low false positives for known patterns
+
+  Limitations:
+  - Cannot detect runtime-only issues
+  - May miss configuration vulnerabilities
+  - Context-dependent issues harder to find
+
+  DAST (Dynamic Analysis) - Runtime Testing:
+  Strengths:
+  - Tests actual running application
+  - Finds configuration issues
+  - Detects authentication/session problems
+  - Real-world attack simulation
+
+  Limitations:
+  - Requires deployed application
+  - Cannot test all code paths
+  - Higher false positives
+  - Slower execution
+
+
+
+SUCCESS CRITERIA
+================
+✅ Enhanced security pipeline created and running
+✅ Understand OWASP Top 10 concepts
+✅ Successfully exploit 4 vulnerability types
+✅ Verify security tools detected exploited vulnerabilities
+✅ Understand SAST vs DAST coverage differences
+✅ Appreciate layered security approach (multiple tools)
+✅ Review consolidated security dashboard
+
+
+PART 5B: LOCAL SECURITY SCANNING (DAST)
+================================================================================
+
+Using Slash Command: /dast-security-scan
+
+Run comprehensive security scans locally against Juice Shop in Kind cluster
+
+Execute slash command to perform 3 types of security analysis:
+
+
+OVERVIEW
+========
+
+Local security scanning complements pipeline-based scanning by allowing:
+• Immediate feedback without CI/CD wait times
+• Testing against locally deployed applications
+• Attack surface analysis using static code inspection
+• Dynamic vulnerability testing with OWASP ZAP
+• Security configuration validation
+
+Prerequisite: Juice Shop deployed in Kind cluster (Part 4 completed)
+
+
+┌─────────────────────────────────────────────────────────────────────────────┐
+│ SCAN 1: Security Headers Analysis                                           │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+  Command: /dast-security-scan Security Headers
+
+  What it does:
+  - Detects application URL (localhost:30080 or Kind node IP)
+  - Analyzes HTTP response headers
+  - Checks for security headers:
+    • X-Content-Type-Options (prevents MIME sniffing)
+    • X-Frame-Options (clickjacking protection)
+    • Content-Security-Policy (XSS mitigation)
+    • Strict-Transport-Security (HTTPS enforcement)
+    • X-XSS-Protection (browser XSS filter)
+
+  Expected Findings:
+  - ✓ X-Content-Type-Options: Present (nosniff)
+  - ✓ X-Frame-Options: Present (SAMEORIGIN)
+  - ✗ Content-Security-Policy: MISSING (intentional - allows XSS)
+  - ✗ Strict-Transport-Security: MISSING (intentional - allows HTTP)
+  - ✗ X-XSS-Protection: MISSING (intentional - vulnerable to XSS)
+
+  Report Location: security-scan-reports/security-headers-scan.txt
+
+  Learning Points:
+  • Missing CSP header increases XSS attack surface
+  • Missing HSTS allows man-in-the-middle attacks
+  • Security headers are first line of browser-based defense
+
+
+
+┌─────────────────────────────────────────────────────────────────────────────┐
+│ SCAN 2: OWASP ZAP Baseline Scan (DAST)                                      │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+  Command: /dast-security-scan OWASP ZAP
+
+  What it does:
+  - Runs OWASP ZAP in Docker container with --network host
+  - Performs baseline DAST scan against localhost:30080
+  - Tests for runtime vulnerabilities:
+    • SQL Injection
+    • XSS (Cross-Site Scripting)
+    • CSRF (Cross-Site Request Forgery)
+    • Security misconfigurations
+    • Information disclosure
+  - Generates HTML report with findings
+
+  Expected Findings (20-50+ vulnerabilities):
+  1. Cross-Domain JavaScript Source File Inclusion (12 instances)
+  2. Content Security Policy (CSP) Header Not Set (11 instances)
+  3. Cross-Domain Misconfiguration (13 instances)
+  4. Information Disclosure - Suspicious Comments (2 instances)
+  5. Dangerous JS Functions (2 instances)
+  6. Insufficient Site Isolation Against Spectre (12 instances)
+
+  Report Location: security-scan-reports/zap-reports/zap-report.html
+
+  Learning Points:
+  • DAST finds runtime vulnerabilities missed by SAST
+  • Tests actual application behavior, not just code
+  • Simulates real-world attacker perspective
+  • Complements static analysis with dynamic testing
+
+  Scan Duration: 2-5 minutes (plus Docker image download on first run)
+
+
+
+┌─────────────────────────────────────────────────────────────────────────────┐
+│ SCAN 3: OWASP Noir - Attack Surface Analysis (SAST)                         │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+  Command: /dast-security-scan OWASP Noir - Attack Surface Analysis
+
+  What it does:
+  - Static code analysis to discover API endpoints
+  - Analyzes source code without running application
+  - Detects technologies: Express.js, OpenAPI, Angular
+  - Maps complete attack surface
+  - Identifies hidden/undocumented endpoints
+
+  Expected Findings:
+  • Total Endpoints Discovered: 600
+  • HTTP Method Distribution:
+    - GET: 341 endpoints (56.8%)
+    - POST: 80 endpoints (13.3%)
+    - PUT: 78 endpoints (13.0%)
+    - DELETE: 44 endpoints (7.3%)
+    - PATCH: 20 endpoints (3.3%)
+    - OPTIONS: 19 endpoints (3.2%)
+    - HEAD: 18 endpoints (3.0%)
+  • Source Files Analyzed: 124
+  • Technologies: Express.js, OpenAPI Spec 3, Angular
+
+  Attack Surface Categories Identified:
+  1. Authentication & Authorization (HIGH RISK)
+     • Login endpoints
+     • Token generation/validation
+     • 2FA endpoints
+     • Session management
+
+  2. User Management (MEDIUM RISK)
+     • User profile CRUD
+     • Password reset
+     • Account deletion
+
+  3. Product & Inventory (MEDIUM RISK)
+     • Product listing/search
+     • Price information
+     • Inventory queries
+
+  4. Shopping Cart & Orders (HIGH RISK)
+     • Basket operations
+     • Order placement
+     • Payment processing
+
+  5. Payment Processing (HIGH RISK)
+     • Payment methods
+     • Coupon/discount application
+     • Transaction processing
+
+  6. File Upload/Download (HIGH RISK)
+     • Image uploads
+     • File complaints
+     • Avatar uploads
+
+  7. Admin Functions (CRITICAL RISK)
+     • Admin panel access
+     • User management
+     • Configuration changes
+
+  8. API Operations (MEDIUM RISK)
+     • REST API endpoints
+     • OpenAPI documentation
+     • Metrics endpoints
+
+  Report Locations:
+  - security-scan-reports/noir-scan.txt (summary)
+  - security-scan-reports/noir-clean.json (machine-readable)
+  - security-scan-reports/NOIR-ATTACK-SURFACE-REPORT.md (comprehensive)
+
+  Learning Points:
+  • Attack surface analysis reveals all entry points
+  • Static analysis discovers endpoints without running app
+  • 600 endpoints = 600 potential attack vectors
+  • Helps prioritize penetration testing targets
+  • Critical for threat modeling and risk assessment
+
+  Scan Duration: 2-3 minutes
+
+
+
+┌─────────────────────────────────────────────────────────────────────────────┐
+│ CONSOLIDATED REPORT: Comprehensive Vulnerability Assessment                 │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+  After all scans complete, the command generates:
+
+  Report: security-scan-reports/JUICE-SHOP-VULNERABILITY-REPORT.md
+
+  Includes:
+  • Executive summary
+  • Scan results from all 3 tools
+  • Combined risk assessment
+  • OWASP Top 10 2021 mapping
+  • Testing methodology
+  • Remediation recommendations
+  • Compliance considerations (PCI DSS, GDPR, SOC 2)
+  • Next steps for security testing
+
+  Key Sections:
+  1. Security Headers Analysis Results
+  2. OWASP ZAP DAST Findings (with severity ratings)
+  3. OWASP Noir Attack Surface (600 endpoints categorized)
+  4. Combined Risk Priorities (Critical/High/Medium/Low)
+  5. Comparison: SAST vs DAST coverage
+  6. Recommendations for production deployments
+
+
+
+┌─────────────────────────────────────────────────────────────────────────────┐
+│ HANDS-ON: Using Noir Results for Penetration Testing                        │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+  Trainee Exercise:
+
+  Step 1: Review Discovered Endpoints
+  -----------------------------------
+  Open: security-scan-reports/noir-clean.json
+  - Browse all 600 discovered endpoints
+  - Identify high-value targets (admin, payment, auth)
+  - Note endpoints with parameters
+
+  Step 2: Manual Testing High-Risk Endpoints
+  ------------------------------------------
+  Using discovered endpoints, test for:
+
+  Example 1: Admin Endpoints (CRITICAL)
+  - Endpoint: /rest/admin/*
+  - Test: Access without authentication
+  - Test: Attempt privilege escalation
+  - Expected: Should require admin role
+
+  Example 2: Basket Operations (HIGH RISK - IDOR)
+  - Endpoint: /rest/basket/[id]
+  - Test: Change ID parameter (1, 2, 3, etc.)
+  - Test: Access other users' baskets
+  - Expected: Should detect IDOR vulnerability
+
+  Example 3: Payment Processing (HIGH RISK)
+  - Endpoint: /api/Payment
+  - Test: Manipulate amount parameters
+  - Test: Apply invalid coupons
+  - Expected: Business logic vulnerabilities
+
+  Example 4: File Upload (HIGH RISK)
+  - Endpoint: /file-upload
+  - Test: Upload malicious files (.php, .jsp, .exe)
+  - Test: Path traversal in filenames
+  - Expected: Insufficient validation
+
+  Step 3: Cross-Reference with ZAP Findings
+  ------------------------------------------
+  - Compare Noir endpoints with ZAP scan results
+  - Identify endpoints flagged by both tools
+  - Prioritize testing endpoints with high severity
+  - Document findings for remediation
+
+
+
+┌─────────────────────────────────────────────────────────────────────────────┐
+│ COMPARISON: Pipeline Scans vs Local Scans                                   │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+  Pipeline-Based Scanning (Part 5):
+  ✓ Automated on every commit
+  ✓ Integrated in CI/CD workflow
+  ✓ Security gates prevent bad deployments
+  ✓ Consolidated reports in GitHub Artifacts
+  ✓ Team visibility and audit trail
+
+  Local Security Scanning (Part 5B):
+  ✓ Immediate feedback (no CI/CD wait)
+  ✓ Pre-commit validation
+  ✓ Developer-friendly workflow
+  ✓ Testing against local deployments
+  ✓ Detailed attack surface analysis
+
+  Best Practice: Use BOTH!
+  • Local scans during development
+  • Pipeline scans for enforcement
+  • Complete coverage with layered approach
+
+
+
+SUCCESS CRITERIA
+================
+✅ Run all 3 local security scans successfully
+✅ Understand Security Headers and their importance
+✅ Review OWASP ZAP HTML report with vulnerability findings
+✅ Analyze OWASP Noir's 600 discovered endpoints
+✅ Identify attack surface categories (Admin, Payment, Auth, etc.)
+✅ Use Noir results for targeted penetration testing
+✅ Cross-reference findings between SAST (Noir) and DAST (ZAP)
+✅ Review consolidated vulnerability assessment report
+✅ Understand difference between pipeline and local scanning
+✅ Appreciate value of attack surface analysis
+
+
+
+PART 6: ADVANCED SECURITY AUTOMATION
+================================================================================
+
+Using Agent: /owasp-top10-analyzer
+
+Automate security workflows with custom agents and hooks
+
+
+┌─────────────────────────────────────────────────────────────────────────────┐
+│ DEMO 1: Custom Security Agents with Claude                         │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+  Using: /owasp-top10-analyzer agent (from Part 2)
+
+  What it does:
+  - Automated vulnerability analysis
+  - OWASP Top 10 compliance checking
+  - Educational insights for each finding
+  - CVSS scoring and CWE mapping
+  - Remediation recommendations
+
+  Demo Scenarios:
+
+  Scenario 1: Full OWASP Top 10 Scan
+  Command: "Analyze this codebase for all OWASP Top 10 vulnerabilities"
+  Result: Comprehensive security dashboard with all 10 categories
+
+  Scenario 2: Focused Analysis
+  Command: "Analyze for A03 (Injection) vulnerabilities only"
+  Result: Deep dive into SQL injection, XSS, command injection
+
+  Use Cases:
+  - Pre-commit security audit
+  - Code review automation
+  - Security training material generation
+  - Compliance reporting
+
+
+
+┌─────────────────────────────────────────────────────────────────────────────┐
+│ DEMO 2: Pre-commit Security Hooks                                   │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+  Concept: Shift-left security (catch issues before commit)
+
+  Tools demonstrated:
+
+  1. Secret Detection (pre-commit)
+     - Gitleaks hook prevents committing secrets
+     - Scans staged files before commit
+     - Blocks commit if secrets found
+
+  2. Security-focused Linting
+     - ESLint security plugins
+     - Detect unsafe patterns (eval, innerHTML)
+     - Enforce secure coding practices
+
+  3. Automated Security Tests
+     - Run unit tests with security focus
+     - API security test suite
+     - Fail commit if security tests fail
+
+  Implementation (demonstration only):
+  - .git/hooks/pre-commit script
+  - Runs Gitleaks on staged files
+  - Runs security linters
+  - Blocks commit on critical findings
+
+
+
+┌─────────────────────────────────────────────────────────────────────────────┐
+│ DEMO 3: Continuous Security Monitoring                              │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+  GitHub Advanced Security Features:
+
+  1. Dependabot:
+     - Automated dependency updates
+     - Security vulnerability alerts
+     - Automatic pull requests for patches
+
+  2. Code Scanning (CodeQL):
+     - Continuous SAST scanning
+     - Integration with GitHub Security tab
+     - Pull request annotations
+
+  3. Secret Scanning:
+     - GitHub detects pushed secrets
+     - Alerts repository admins
+     - Partner pattern detection (AWS, Azure, etc.)
+
+  4. Security Advisories:
+     - Private vulnerability reporting
+     - CVSS scoring
+     - Coordinated disclosure
+
+  Configuration (demonstration):
+  - Settings → Security & Analysis
+  - Enable Dependabot alerts
+  - Enable Dependabot security updates
+  - Enable CodeQL analysis
+  - Enable Secret scanning
+
+
+
+SUCCESS CRITERIA
+================
+✅ Understand custom security agent capabilities
+✅ See pre-commit hook demonstration
+✅ Learn GitHub Advanced Security features
+✅ Appreciate shift-left security approach
+✅ Understand continuous monitoring concepts
+
+
+QUICK REFERENCE: SECURITY TOOLS SUMMARY
+========================================
+
+SAST (Static Analysis):
+  CodeQL        - Multi-language code scanning
+  Semgrep       - Pattern-based security rules
+
+SCA (Composition Analysis):
+  npm audit     - Node.js dependency scanning
+  RetireJS      - JavaScript library vulnerabilities
+
+Secret Detection:
+  TruffleHog    - Git history secret scanning
+  Gitleaks      - Comprehensive secret detection
+  detect-secrets- Pre-commit secret prevention
+
+Container Security:
+  Trivy         - Container image vulnerability scanner
+  Grype         - Alternative container scanner
+
+Policy as Code:
+  OPA/Conftest  - Dockerfile and K8s policy validation
+  KubeSec       - K8s manifest security scoring
+
+DAST (Dynamic Analysis):
+  OWASP ZAP     - Web application security scanner
+  Burp Suite    - Manual security testing
+
+Attack Surface Analysis:
+  OWASP Noir    - API endpoint discovery via static analysis
+                  Discovers 600+ endpoints, maps attack surface
+
+Code Quality:
+  SonarQube     - Code quality + security analysis
+
+
+TRAINING RESOURCES
+==================
+
+OWASP Juice Shop:
+  - Challenges: http://localhost:30080/#/score-board
+  - Documentation: https://pwning.owasp-juice.shop
+  - 100+ challenges across OWASP Top 10
+
+Security Scan Reports:
+  - GitHub Actions → Artifacts → consolidated-security-reports
+  - security-dashboard.html (interactive dashboard)
+  - security-report.md (GitHub-friendly summary)
+
+Claude Code CLI:
+  - /owasp-top10-analyzer - Automated vulnerability analysis
+  - /security-scan-inclusive-pipeline - Security pipeline setup
+  - /dast-security-scan - Local security scanning (Headers, ZAP, Noir)
+  - Agent-based security automation
+
+Local Security Scan Reports:
+  - security-scan-reports/security-headers-scan.txt
+  - security-scan-reports/zap-reports/zap-report.html
+  - security-scan-reports/NOIR-ATTACK-SURFACE-REPORT.md
+  - security-scan-reports/JUICE-SHOP-VULNERABILITY-REPORT.md
+
