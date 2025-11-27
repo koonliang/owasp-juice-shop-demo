@@ -1,0 +1,130 @@
+name: Simple 4-Stage Pipeline
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+  workflow_dispatch:
+
+jobs:
+  # Stage 1: Lint
+  lint:
+    name: Lint Code
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run ESLint
+        run: npm run lint
+
+      - name: Lint Success
+        run: echo "✅ Stage 1 Complete - Code linting passed!"
+
+  # Stage 2: Test
+  test:
+    name: Run Tests
+    runs-on: ubuntu-latest
+    needs: lint
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run server tests
+        run: npm run test:server
+
+      - name: Test Success
+        run: echo "✅ Stage 2 Complete - All tests passed!"
+
+  # Stage 3: Build
+  build:
+    name: Build Docker Image
+    runs-on: ubuntu-latest
+    needs: test
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Build Docker image
+        run: |
+          docker build -t juice-shop:latest .
+          echo "✅ Docker image built successfully"
+
+      - name: Save Docker image as artifact
+        run: |
+          docker save juice-shop:latest -o juice-shop-image.tar
+          echo "✅ Docker image saved to artifact"
+
+      - name: Upload Docker image artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: docker-image
+          path: juice-shop-image.tar
+          retention-days: 1
+
+      - name: Build Success
+        run: echo "✅ Stage 3 Complete - Docker image built and saved!"
+
+  # Stage 4: Push to Docker Hub
+  push-to-dockerhub:
+    name: Push to Docker Hub
+    runs-on: ubuntu-latest
+    needs: build
+    env:
+      DOCKER_USERNAME: rupeedev
+      DOCKER_REPO: owasp-juice-shop
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Download Docker image artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: docker-image
+
+      - name: Load Docker image
+        run: |
+          docker load -i juice-shop-image.tar
+          echo "✅ Docker image loaded"
+
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ env.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Tag and push images
+        run: |
+          docker tag juice-shop:latest ${{ env.DOCKER_USERNAME }}/${{ env.DOCKER_REPO }}:latest
+          docker tag juice-shop:latest ${{ env.DOCKER_USERNAME }}/${{ env.DOCKER_REPO }}:${{ github.sha }}
+          docker tag juice-shop:latest ${{ env.DOCKER_USERNAME }}/${{ env.DOCKER_REPO }}:simple
+
+          docker push ${{ env.DOCKER_USERNAME }}/${{ env.DOCKER_REPO }}:latest
+          docker push ${{ env.DOCKER_USERNAME }}/${{ env.DOCKER_REPO }}:${{ github.sha }}
+          docker push ${{ env.DOCKER_USERNAME }}/${{ env.DOCKER_REPO }}:simple
+
+          echo "✅ Images pushed to Docker Hub!"
+
+      - name: Success message
+        run: |
+          echo "🎉 All 4 stages completed!"
+          echo "🌐 View images: https://hub.docker.com/r/${{ env.DOCKER_USERNAME }}/${{ env.DOCKER_REPO }}"
