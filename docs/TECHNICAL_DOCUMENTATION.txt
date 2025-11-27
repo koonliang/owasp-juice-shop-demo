@@ -1,0 +1,1997 @@
+OWASP Juice Shop - Technical Documentation
+===========================================
+
+TL;DR
+-----
+OWASP Juice Shop is a full-stack TypeScript web application (v19.1.1) designed
+as an intentionally vulnerable e-commerce platform for security training and
+testing. Built with Express.js (backend), Angular 20.x (frontend), SQLite +
+MarsDB (data), it features 60+ routes, 21 data models, 70+ frontend components,
+and simulates real-world OWASP Top 10 vulnerabilities. Runs on Node.js 20-24,
+default port 3000, with comprehensive test coverage (Mocha, Jest, Cypress).
+
+
+PROJECT OVERVIEW & QUICK STATS
+==============================
+
+Application Name: OWASP Juice Shop
+Version: 19.1.1
+Repository: https://github.com/juice-shop/juice-shop
+Official Website: https://owasp-juice.shop
+License: MIT
+
+Purpose
+-------
+An intentionally vulnerable web application for security awareness, training,
+penetration testing, CTF (Capture The Flag) competitions, and as a test bed for
+security tools. Demonstrates real-world security flaws from OWASP Top 10 and
+beyond.
+
+Target Users
+- Security professionals and penetration testers
+- Security awareness and training programs
+- CTF competition participants
+- Students learning web application security
+- Security researchers and tool developers
+
+Quick Statistics
+- 60+ API routes (40+ backend route handlers)
+- 21 Sequelize data models
+- 70+ Angular frontend components
+- 40+ Angular services
+- 30+ supported languages (i18n)
+- 14 configuration profiles
+- 100+ Cypress E2E tests
+- Multiple test frameworks (Mocha, Jest, Cypress, Jasmine/Karma)
+- 26K+ lines in datacreator.ts alone
+- ~23K lines in default configuration
+
+
+TECHNOLOGY STACK BREAKDOWN
+==========================
+
+Backend Runtime & Framework
+----------------------------
+- Node.js: 20.x - 24.x (required)
+- Express.js: Latest (REST API server)
+- TypeScript: Latest (type-safe development)
+- ts-node: Development runtime without compilation
+
+Frontend Framework
+------------------
+- Angular: 20.1.0+ (SPA framework)
+- Angular Material: 20.1.0 (UI components library)
+- Angular CDK: 20.1.0 (component development utilities)
+- Angular CLI: 20.1.6 (development tooling)
+
+Styling Solutions
+-----------------
+- SCSS: Component and global styling
+- stylelint: SCSS linting
+- Angular Material themes (6 built-in themes)
+  - bluegrey-lightgreen (default)
+  - blue-lightblue
+  - deeppurple-amber
+  - indigo-pink
+  - pink-bluegrey
+  - purple-green
+  - deeporange-indigo
+
+State Management & Routing
+--------------------------
+- RxJS: Observables-based reactivity (no NgRx)
+- Angular Services: Application state management
+- Angular Router: 100+ routes defined in app.routing.ts
+
+Database & ORM
+--------------
+- SQLite: File-based primary database (data/juiceshop.sqlite)
+- Sequelize: 6.37 (ORM for 21 models)
+- MarsDB: In-memory NoSQL collections (posts, orders)
+
+Build & Bundling Tools
+-----------------------
+- TypeScript Compiler (tsc): Backend compilation
+- Angular CLI: Frontend build with webpack
+- Webpack: Custom webpack configuration (@angular-builders/custom-webpack)
+- Grunt: Package distribution tasks
+- Concurrently: Run multiple npm scripts in parallel
+
+Key Libraries by Category
+--------------------------
+
+Authentication & Security
+  - jsonwebtoken: JWT token generation and verification
+  - bcrypt: Password hashing
+  - express-jwt: JWT middleware for Express
+  - helmet: Security headers (CSP, X-Frame-Options, HSTS, etc.)
+  - express-rate-limit: API rate limiting
+  - express-ipfilter: IP-based access control
+  - cookie-parser: Parse HTTP cookies
+  - otplib: One-time password (2FA) generation
+
+HTTP & API
+  - express: Web framework and routing
+  - cors: Cross-origin resource sharing
+  - body-parser: JSON request parsing
+  - multer: File upload handling
+  - compression: Gzip compression middleware
+  - morgan: HTTP request logging
+  - axios: HTTP client (frontend)
+  - socket.io: WebSocket real-time communication
+
+Data & Serialization
+  - js-yaml: YAML parsing (configuration)
+  - joi: Schema validation
+  - cyclonedx-npm: Software Bill of Materials generation
+
+Forms & Validation
+  - @angular/forms: Reactive and template-driven forms
+  - ng-validators: Custom validators
+
+Frontend UI & Visualization
+  - @angular/material: Material Design components
+  - @fortawesome: Font Awesome icons (5+ font sets)
+  - flag-icons: Country flag icons
+  - canvas-confetti: Confetti animation effects
+  - ng-gallery: Image gallery component
+  - ng-qrcode: QR code generation
+  - chart.js: Data visualization (if charting used)
+  - codemirror: Code editor for code challenges
+  - codemirror-solidity: Solidity syntax highlighting
+
+i18n & Localization
+  - i18n: Server-side internationalization
+  - @ngx-translate: Frontend translation system
+  - 30+ language files in /frontend/src/assets/i18n/
+
+Web3 & Blockchain
+  - ethers.js: 5.7.2 (Ethereum library)
+  - web3.js: Web3 blockchain interaction
+  - @wagmi/core: 0.5.8 (Wagmi hooks for Web3)
+
+Development & Testing Tools
+  - Mocha: Server-side unit testing framework
+  - Chai: Assertion library for Mocha
+  - Jest: API integration testing framework with frisby
+  - Frisby: REST API testing DSL
+  - Jasmine: Angular component testing framework
+  - Karma: Test runner for Jasmine (Angular tests)
+  - Cypress: 100+ E2E tests (interactive and headless)
+  - nyc (Istanbul): Code coverage reporting
+  - ts-node: TypeScript runtime for Node.js
+  - ts-node-dev: Development mode with auto-reload
+  - source-map-support: Stack traces in TypeScript
+  - Sinon: Mocking and stubbing library
+
+Code Quality
+  - ESLint: JavaScript/TypeScript linting
+  - @typescript-eslint: TypeScript-specific linting rules
+  - Prettier: Code formatting
+  - ng lint: Angular-specific linting
+
+Monitoring & Logging
+  - prom-client: Prometheus metrics collection
+  - winston: Logging library
+
+Utilities
+  - colors: Colored console output
+  - lodash-es: Utility functions (ES modules)
+  - file-stream-rotator: Log file rotation
+  - jwt-decode: Decode JWT tokens (frontend)
+  - file-saver: Save files from browser
+  - jssha: SHA cryptographic hashing
+  - pdf-lib: PDF generation (pdfkit alternative)
+
+Other
+  - swagger-ui-express: Swagger/OpenAPI UI
+  - finale-rest: Auto-generate REST endpoints
+  - serve-index: Directory listing middleware
+  - express-robots-txt: robots.txt middleware
+  - feature-policy: Feature policy headers
+  - express-security.txt: security.txt middleware
+  - config: Configuration management (node-config)
+
+
+PROJECT STRUCTURE & DIRECTORY ORGANIZATION
+===========================================
+
+Root Level Files
+----------------
+/app.ts                      Application entry point (minimal wrapper)
+/server.ts                   Main server init (400+ lines), middleware setup
+/package.json                Root dependencies & npm scripts
+/package-lock.json           Dependency lock file
+/tsconfig.json              TypeScript compiler configuration
+/.eslintrc.js               ESLint configuration rules
+/config.schema.yml          JSON Schema for configuration validation
+/Dockerfile                 Multi-stage Docker build
+/Gruntfile.js               Grunt task definitions for packaging
+/cypress.config.ts          Cypress E2E test configuration
+/swagger.yml                OpenAPI/Swagger specification
+
+
+Backend Code Organization
+---------
+
+/routes/                     Express route handlers (60+ files)
+  /2fa.ts                   Two-factor authentication
+  /address.ts               Address management (CRUD)
+  /basket.ts                Shopping basket operations
+  /basketItems.ts           Basket item management
+  /login.ts                 User authentication
+  /logout.ts                Session termination
+  /register.ts              User registration
+  /payment.ts               Payment processing
+  /order.ts                 Order creation and management
+  /delivery.ts              Delivery options
+  /administration.ts        Admin panel routes
+  /search.ts                Product search (vulnerable)
+  /products.ts              Product catalog
+  /reviews.ts               Product reviews
+  /fileUpload.ts            File upload handling (vulnerable)
+  /chatbot.ts               Chatbot API
+  /web3Wallet.ts            Web3/blockchain wallet
+  /nftMint.ts               NFT minting routes
+  /metrics.ts               Prometheus metrics endpoint
+  /redirect.ts              Open redirect (vulnerable)
+  /errorHandler.ts          Error response middleware
+  [45+ more route files...]
+
+/models/                     Sequelize ORM models (21 models)
+  /index.ts                 Database initialization & setup
+  /relations.ts             Model relationship definitions
+  /user.ts                  User accounts (auth, 2FA, security Q&A)
+  /product.ts               Product catalog
+  /order.ts                 Order data (via MarsDB)
+  /basket.ts                Shopping basket
+  /basketitem.ts            Individual basket items
+  /address.ts               Shipping addresses
+  /card.ts                  Payment card information
+  /wallet.ts                Digital wallet
+  /challenge.ts             Security challenges (OWASP training)
+  /feedback.ts              User feedback
+  /complaint.ts             User complaints
+  /hint.ts                  Challenge hints
+  /securityQuestion.ts      Security Q&A questions
+  /securityAnswer.ts        Security Q&A answers
+  /delivery.ts              Delivery methods
+  /quantity.ts              Product quantity tracking
+  /recycle.ts               Recycling program data
+  /imageCaptcha.ts          Image CAPTCHA data
+  /captcha.ts               CAPTCHA challenge data
+  /privacyRequests.ts       GDPR privacy requests
+  /memory.ts                Application memories/easter eggs
+
+/lib/                        Utility libraries and core logic
+  /insecurity.ts            Vulnerability implementations (SQL injection,
+                            XSS, IDOR, etc.)
+  /utils.ts                 General utility functions
+  /logger.ts                Winston logging configuration
+  /antiCheat.ts             Cheat detection for CTF mode
+  /config.types.ts          TypeScript config type definitions
+  /challengeUtils.ts        Challenge scoring & tracking
+  /codingChallenges.ts      Dynamic coding challenge loading
+  /startup/
+    /validateConfig.ts      Configuration validation on startup
+    /validatePreconditions.ts  Check Node version and dependencies
+    /customizeApplication.ts   Application customization based on config
+    [other startup tasks...]
+
+/data/                       Data initialization & population
+  /datacreator.ts           Main data population (26K lines)
+  /datacache.ts             Data caching layer
+  /mongodb.ts               MarsDB NoSQL collections setup
+  /staticData.ts            Static data loaders
+  /types.ts                 TypeScript type definitions
+  /static/
+    /challenges.yml         OWASP challenge definitions (100+)
+    /users.yml              Pre-loaded user accounts
+    /products.yml           Product catalog data
+    /deliveries.yml         Delivery method options
+    /securityQuestions.yml  Security Q&A pool
+    /locales.json           Supported language list (30+)
+    /i18n/                  Server-side translations
+    /codefixes/             Code fixing challenge solutions
+    /web3-snippets/         Solidity smart contract examples
+    /contractABIs.ts        Ethereum contract ABIs
+    /botDefaultTrainingData.json  Chatbot training data
+
+
+Configuration Files
+--------
+
+/config/                     Configuration profiles (14 YAML files)
+  /default.yml              Main configuration (23K lines)
+  /ctf.yml                  CTF competition mode
+  /tutorial.yml             Tutorial/training mode
+  /unsafe.yml               All security features disabled
+  /quiet.yml                Minimal console output
+  /test.yml                 Testing environment
+  /7ms.yml, /addo.yml, /bodgeit.yml, /defcon33.yml,
+  /fbctf.yml, /juicebox.yml, /mozilla.yml, /oss.yml
+
+
+Testing Infrastructure
+--------
+
+/test/                       Complete test suite
+  /server/                  Mocha server unit tests
+  /api/                     Jest/Frisby API integration tests
+  /cypress/
+    /e2e/                   Cypress E2E tests (100+ test files)
+    /support/
+      /e2e.ts               Cypress support code & custom commands
+    /downloads/             Test download artifacts
+  /files/                   Test fixtures and test data
+  /smoke/                   Smoke tests
+  /apiTestsSetup.ts         Global Jest setup
+  /apiTestsTeardown.ts      Global Jest teardown
+
+
+Compiled Output
+--------
+
+/build/                      Compiled TypeScript (JavaScript output)
+  /app.js                   Compiled app entry point
+  /server.js                Compiled server initialization
+  /routes/                  Compiled route handlers
+  /models/                  Compiled ORM models
+  /lib/                     Compiled utility libraries
+  /data/                    Compiled data initialization
+  /reports/
+    /coverage/              Code coverage reports (NYC)
+      /server-tests/        Server test coverage
+      /api-tests/           API test coverage
+
+
+Frontend Application
+--------
+
+/frontend/                   Angular SPA application
+  /package.json             Frontend-specific dependencies
+  /angular.json             Angular CLI configuration
+  /tsconfig.json            Frontend TypeScript config
+  /src/
+    /main.ts                Angular bootstrap entry point
+    /index.html             Main HTML shell
+    /styles.scss            Global application styles
+    /app/
+      /app.module.ts        Root Angular module
+      /app.routing.ts       Route definitions (100+)
+      /app.component.*      Root component
+      /Models/              Data models (21 models)
+        /challenge.model.ts
+        /user.model.ts
+        /product.model.ts
+        [other models...]
+      /Services/            Angular services (40+)
+        /user.service.ts           Authentication & profile
+        /product.service.ts        Product catalog
+        /basket.service.ts         Shopping cart
+        /challenge.service.ts      Challenge data & scoring
+        /payment.service.ts        Payment handling
+        /delivery.service.ts       Delivery options
+        /configuration.service.ts  Dynamic config loading
+        /socket-io.service.ts      Real-time WebSocket events
+        [35+ more services...]
+      /[70+ Components]/      Page & UI components
+        /login/
+        /register/
+        /product-details/
+        /basket/
+        /score-board/
+        /administration/
+        /code-fixes/
+        /web3-sandbox/
+        /chatbot/
+        [more components...]
+    /assets/
+      /i18n/                Translations (30+ languages)
+      /public/images/       Product images, logos
+      /public/css/          Custom stylesheets
+    /environments/          Environment-specific configs
+      /environment.ts       Development environment
+      /environment.prod.ts  Production environment
+  /dist/                    Production build output
+    /frontend/              Compiled Angular app (served as static)
+
+
+Data Storage
+--------
+
+/data/juiceshop.sqlite      SQLite database file (created on startup)
+/encryptionkeys/
+  /jwt.pub                  JWT public key for token signing
+  /premium.key              Encryption key for premium features
+
+
+Utilities & Scripts
+--------
+
+/lib/startup/               Server startup tasks
+/ftp/                       FTP server test directory
+/.well-known/               Security & compliance metadata
+  /csaf/                    CSAF vulnerability advisories
+  /security.txt             Security contact information
+/monitoring/                Prometheus metrics configuration
+
+
+Naming Conventions
+------------------
+
+- Service files: camelCase.service.ts (e.g., userAuth.service.ts)
+- Component files: kebab-case.component.ts (e.g., product-details.component.ts)
+- Model files: camelCase.ts (e.g., user.ts, product.ts)
+- Route files: camelCase.ts (e.g., login.ts, basket.ts)
+- Configuration: YAML format with hierarchical nesting
+- Database tables: Sequelize auto-pluralizes model names (User → Users)
+
+Module Organization Pattern
+---------------------------
+
+Backend uses feature-based organization:
+- All routes in /routes, organized by feature area
+- All models in /models, one file per entity
+- All utilities in /lib, organized by function
+
+Frontend uses Angular conventions:
+- Components in /app/ subdirectories or with component prefix
+- Services grouped in /Services directory
+- Models in /Models directory
+- Shared utilities in /app directory
+
+
+MAIN FEATURES & MODULES
+=======================
+
+Feature 1: Authentication & User Management
+--------------------------------------------
+Description: Complete user authentication, registration, password reset,
+             two-factor authentication, and security questions system.
+
+Key Components:
+  - Routes: /login.ts, /logout.ts, /register.ts, /resetPassword.ts, /2fa.ts
+  - Models: User, SecurityQuestion, SecurityAnswer
+  - Services: UserService, TwoFactorAuthService, SecurityQuestionService
+  - UI Components: login, register, forgot-password, two-factor-auth
+
+Routes & Endpoints:
+  - POST /api/users - Register new user
+  - POST /api/users/login - Login with credentials (vulnerable)
+  - GET /api/users/:id - Get user profile (IDOR vulnerability)
+  - PUT /api/users/:id - Update user profile
+  - POST /api/users/change-password - Change password
+  - POST /api/users/reset-password - Reset forgotten password (vulnerable)
+  - POST /api/verify - Email verification (if enabled)
+  - POST /api/2fa/setup - Enable 2FA
+  - POST /api/2fa/verify - Verify 2FA token
+  - GET /api/current-user - Get logged-in user info
+
+Key Features:
+  - User registration with email validation (optional)
+  - Login with username/email and password
+  - Password reset via security questions (vulnerable)
+  - Two-factor authentication (TOTP)
+  - Security questions for account recovery
+  - User profile management
+  - Role-based access (admin, customer, premium)
+
+Vulnerabilities Intentionally Included:
+  - SQL injection in login form
+  - Weak password policy
+  - Session fixation
+  - Broken authentication flow
+  - User enumeration
+
+
+Feature 2: Product Catalog & Shopping
+--------------------------------------
+Description: E-commerce product browsing, searching, reviews, and ratings.
+
+Key Components:
+  - Routes: /products.ts, /search.ts, /showProductReviews.ts,
+            /createProductReviews.ts, /updateProductReviews.ts
+  - Models: Product, Review (via MarsDB)
+  - Services: ProductService, ProductReviewService, SearchService
+  - UI Components: product-details, product-review, product-review-edit,
+                   search-result, mat-search-bar
+
+Routes & Endpoints:
+  - GET /api/products - List all products with filtering/pagination
+  - GET /api/products/:id - Get single product details (vulnerable)
+  - GET /api/products/search - Search products (SQL injection)
+  - GET /api/products/:id/reviews - Get product reviews
+  - POST /api/products/:id/reviews - Create product review (XSS)
+  - PUT /api/products/:id/reviews/:reviewId - Update review
+  - DELETE /api/products/:id/reviews/:reviewId - Delete review
+  - GET /api/products/recommendations - Get product recommendations
+  - PUT /api/products/:id - Update product (admin only, vulnerable)
+
+Key Features:
+  - Product filtering by price, rating, category
+  - Full-text search (vulnerable to SQL injection)
+  - Product reviews with ratings (1-5 stars)
+  - Review management (create, edit, delete)
+  - Product recommendations
+  - Review likes/helpful voting
+  - Product image gallery
+
+Data Model:
+  - Product: id, name, description, price, image, category, reviews
+  - Review: id, productId, author, rating, comment, date
+
+Vulnerabilities Intentionally Included:
+  - SQL injection in search
+  - SQL injection in product updates
+  - Broken access control on review management
+  - XSS in product reviews
+  - IDOR in product details
+  - Path traversal in product images
+
+
+Feature 3: Shopping Cart & Checkout
+-----------------------------------
+Description: Shopping basket management, order creation, and checkout flow.
+
+Key Components:
+  - Routes: /basket.ts, /basketItems.ts, /order.ts, /payment.ts,
+            /delivery.ts, /trackOrder.ts
+  - Models: Basket, BasketItem, Order, Delivery
+  - Services: BasketService, OrderHistoryService, PaymentService,
+              DeliveryService
+  - UI Components: basket, purchase-basket, payment, payment-method,
+                   delivery-method, order-summary, order-history,
+                   order-completion, track-result
+
+Routes & Endpoints:
+  - GET /api/baskets - Get current user's basket (IDOR)
+  - PUT /api/baskets/:id - Update basket items (price manipulation)
+  - POST /api/baskets/:id/items - Add item to basket
+  - PUT /api/baskets/:id/items/:itemId - Update basket item quantity
+  - DELETE /api/baskets/:id/items/:itemId - Remove item from basket
+  - POST /api/orders - Create order from basket
+  - GET /api/orders/:id - Get order details (IDOR)
+  - GET /api/order-history - List user's orders
+  - POST /api/orders/:id/payments - Process payment
+  - GET /api/deliveries - Get delivery methods
+  - POST /api/orders/:id/track - Track order status
+
+Key Features:
+  - Add/remove items from basket
+  - Update item quantities
+  - Price calculation and totals
+  - Discount/coupon codes
+  - Order creation from basket
+  - Payment method selection
+  - Delivery address selection
+  - Order tracking
+  - Order history
+
+Data Models:
+  - Basket: userId, basketItems
+  - BasketItem: basketId, productId, quantity, price (vulnerable)
+  - Order: userId, items, total, status, createdAt, deliveryAddress
+  - Delivery: id, name, cost, estimatedDays
+
+Vulnerabilities Intentionally Included:
+  - IDOR in basket/order access
+  - Price manipulation via direct API calls
+  - Order status bypass
+  - Coupon code injection
+  - Checkout flow bypass
+
+
+Feature 4: Security Challenges & Training
+------------------------------------------
+Description: OWASP vulnerability challenges with hints, solutions, and
+             scoring system for security training.
+
+Key Components:
+  - Routes: /challenges.ts, /solveChallenge.ts, /continueCode.ts
+  - Models: Challenge, Hint
+  - Services: ChallengeService, HintService
+  - UI Components: score-board, challenge-card, challenge-status-badge,
+                   code-fixes, code-snippet, code-area,
+                   hacking-challenge-progress-score-card,
+                   coding-challenge-progress-score-card
+
+Routes & Endpoints:
+  - GET /api/challenges - Get all challenges with status
+  - GET /api/challenges/:id - Get single challenge details
+  - PUT /api/challenges/:id - Mark challenge as solved (vulnerable)
+  - GET /api/hints/:id - Get hint for challenge
+  - POST /api/challenges/:id/continue-code - Submit code fix solution
+  - GET /api/challenges/hints/:challengeId - List all hints
+  - GET /api/challenges/mitigations/:challengeId - Get mitigation info
+
+Key Features:
+  - 100+ security vulnerability challenges
+  - Multiple difficulty levels (1-5 stars)
+  - Challenge hints system
+  - Mitigation guidance
+  - Hacking challenges vs. coding challenges
+  - Challenge scoring and leaderboard
+  - Challenge categories (OWASP Top 10, etc.)
+  - Progress tracking
+  - Code fixing challenges with automated verification
+  - CTF mode with flags
+
+Challenge Categories:
+  - Authentication vulnerabilities
+  - Authorization/IDOR
+  - Injection (SQL, NoSQL, Command)
+  - XSS (DOM, Stored, Reflected)
+  - Sensitive data exposure
+  - Broken cryptography
+  - Path traversal
+  - Security misconfiguration
+  - Known vulnerable dependencies
+  - API/business logic flaws
+  - Web3/blockchain vulnerabilities
+
+Data Models:
+  - Challenge: id, key, name, category, difficulty, description,
+               solved, hints, mitigations, tags
+  - Hint: id, challengeId, content, difficulty
+
+Vulnerabilities Intentionally Included:
+  - Challenges can be marked as solved without actually solving them
+  - Hints may expose solution details
+  - Challenge status bypass
+
+
+Feature 5: File Upload & Handling
+----------------------------------
+Description: File upload functionality (profile images, data exports) with
+             security vulnerabilities.
+
+Key Components:
+  - Routes: /fileUpload.ts, /profileImageFileUpload.ts,
+            /profileImageUrlUpload.ts, /dataExport.ts, /logfileServer.ts,
+            /fileServer.ts
+  - Services: PhotoWallService, DataExportService, LocalBackupService
+  - UI Components: photo-wall, data-export, profile-image-upload
+
+Routes & Endpoints:
+  - POST /api/file-upload - Upload file (path traversal, RCE)
+  - POST /api/profile-image-upload - Upload profile picture
+  - POST /api/profile-image-url-upload - Set profile from URL
+  - GET /api/file/:filepath - Retrieve uploaded file (path traversal)
+  - POST /api/data-export - Export user data as JSON/XML
+  - GET /api/logs - Access application logs (vulnerable)
+  - GET /api/files/:type/:name - Serve files (vulnerable)
+
+Key Features:
+  - User profile image upload
+  - Profile image from URL
+  - Photo wall/gallery of user images
+  - Export user data in multiple formats
+  - Access application logs
+  - File management
+
+Vulnerabilities Intentionally Included:
+  - Path traversal in file upload/retrieval
+  - File type validation bypass
+  - Arbitrary file upload (RCE potential)
+  - Unrestricted directory listing
+  - Access to sensitive files (logs, config)
+
+
+Feature 6: Administration Panel
+-------------------------------
+Description: Admin-only functions for user management, metrics, and system
+             configuration.
+
+Key Components:
+  - Routes: /administration.ts, /dataExport.ts, /dataErasure.ts,
+            /metrics.ts
+  - Models: User (admin role)
+  - Services: AdministrationService, MetricsService
+  - UI Components: administration, feedback-details,
+                   last-login-ip
+
+Routes & Endpoints:
+  - GET /api/admin/users - List all users (admin only, vulnerable)
+  - PUT /api/admin/users/:id - Modify user (admin only)
+  - DELETE /api/admin/users/:id - Delete user
+  - GET /api/admin/stats - System statistics
+  - GET /api/metrics - Prometheus metrics (exposed!)
+  - POST /api/admin/data-export - Export system data
+  - POST /api/admin/data-erasure - GDPR data erasure
+  - GET /api/admin/logs - Access logs
+
+Admin Features:
+  - User management (create, edit, delete)
+  - User role assignment
+  - System statistics and metrics
+  - Data export/backup
+  - Data erasure (GDPR compliance)
+  - Access logs
+  - Configuration management
+
+Vulnerabilities Intentionally Included:
+  - Broken authentication on admin routes
+  - Privilege escalation
+  - Admin endpoint enumeration
+  - Exposed metrics endpoint
+  - Unvalidated redirects from admin panel
+  - CSRF on admin actions
+  - Access to application logs
+  - Data exposure in metrics
+
+
+Feature 7: API Documentation & Introspection
+--------------------------------------------
+Description: Swagger/OpenAPI documentation and auto-generated endpoints.
+
+Key Components:
+  - Route: API documentation endpoint
+  - Tool: swagger-ui-express, finale-rest
+
+Routes & Endpoints:
+  - GET /api-docs - Swagger UI interface (vulnerable exposure)
+  - GET /api-docs.json - OpenAPI specification
+  - GET /rest - Auto-generated REST endpoints (vulnerable)
+
+Vulnerabilities Intentionally Included:
+  - Exposed API documentation revealing endpoints
+  - Auto-generated endpoints with vulnerabilities
+  - Information disclosure via API spec
+
+
+Feature 8: Web3 & Blockchain Integration
+---------------------------------------
+Description: Ethereum wallet integration, NFT features, and token operations.
+
+Key Components:
+  - Routes: /web3Wallet.ts, /nftMint.ts, /wallet.ts, /tokenSale.ts
+  - Models: Wallet, (NFT data via smart contracts)
+  - Services: WalletService, Web3Service
+  - UI Components: web3-sandbox, wallet-web3, faucet, token-sale,
+                   nft-unlock
+
+Routes & Endpoints:
+  - GET /api/wallet - Get user's crypto wallet
+  - POST /api/wallet/eth-address - Set Ethereum address
+  - GET /api/wallet/balance - Get wallet balance
+  - POST /api/nft/mint - Mint NFT (vulnerable contract)
+  - POST /api/nft/unlock - Unlock NFT features
+  - POST /api/token-sale - Participate in token sale
+  - GET /api/faucet - Request test ETH from faucet
+
+Key Features:
+  - Ethereum wallet integration
+  - NFT minting and management
+  - Token sale participation
+  - Smart contract interaction
+  - Test network faucet
+  - Wallet balance queries
+
+Vulnerabilities Intentionally Included:
+  - Smart contract vulnerabilities (reentrancy, overflow, etc.)
+  - Improper access control on NFT minting
+  - Token sale bypass
+  - Weak signature verification
+
+
+Feature 9: Chatbot & AI Integration
+-----------------------------------
+Description: AI chatbot for user support with training data and responses.
+
+Key Components:
+  - Routes: /chatbot.ts
+  - Services: ChatbotService
+  - UI Components: chatbot
+
+Routes & Endpoints:
+  - POST /api/chatbot/send - Send message to chatbot
+  - GET /api/chatbot/messages - Get chat history
+  - POST /api/chatbot/training - Train bot (admin only, vulnerable)
+
+Key Features:
+  - User support chatbot
+  - Chat history
+  - Training data management
+  - Response customization
+  - Multi-language support
+
+Vulnerabilities Intentionally Included:
+  - Injection attacks in bot responses
+  - Training data manipulation
+  - Chat history exposure
+
+
+Feature 10: Additional Features
+------------------------------
+- 2FA/MFA: Two-factor authentication setup and verification
+- Email/Newsletter: Contact form, email subscriptions (XSS)
+- Deluxe User Program: Premium membership with IDOR vulnerabilities
+- Recycling/Sustainability: Loyalty program for recycled products
+- Password Reset: Security question-based password recovery
+- Coupon/Promo: Discount code application and validation
+- Address Management: Shipping address CRUD (IDOR)
+- Payment Methods: Saved credit cards (sensitive data exposure)
+- Video Handler: Video streaming with path traversal vulnerabilities
+- Easter Eggs: Hidden content and achievements
+- Custom Challenges: Business logic flaws and complex scenarios
+
+
+ENVIRONMENT CONFIGURATION
+==========================
+
+API Endpoints by Environment
+-----------------------------
+
+Development (Local)
+  Base URL: http://localhost:3000
+  Backend API: http://localhost:3000/api
+  Frontend: http://localhost:4200 (ng serve during development)
+  WebSocket: ws://localhost:3000
+
+Production (Default)
+  Base URL: http://localhost:3000 (configurable via config)
+  Can be changed in /config/default.yml (server.baseUrl)
+
+Configuration Profiles
+----------------------
+
+Default Profile: /config/default.yml
+  - Full feature set
+  - Hints enabled
+  - All challenges available
+  - Security features enabled
+
+CTF Mode: /config/ctf.yml
+  - No hints visible
+  - Reduced challenge difficulty display
+  - Leaderboard enabled
+  - Competitive scoring
+
+Tutorial Mode: /config/tutorial.yml
+  - Simplified challenges
+  - Enhanced hints
+  - Step-by-step guidance
+  - Perfect for beginners
+
+Unsafe Mode: /config/unsafe.yml
+  - Security features disabled
+  - CORS completely open
+  - No rate limiting
+  - Debug information exposed
+
+Other Profiles:
+  - /config/quiet.yml - Minimal console output
+  - /config/test.yml - Testing environment
+  - /config/oss.yml - Open-source mode
+  - /config/mozilla.yml - Mozilla-specific configuration
+  - /config/7ms.yml, /config/addo.yml, /config/bodgeit.yml, etc.
+
+Select Environment Profile
+---------------------------
+
+Set NODE_ENV environment variable:
+
+NODE_ENV=ctf npm start        # Run in CTF mode
+NODE_ENV=tutorial npm start   # Run in tutorial mode
+NODE_ENV=unsafe npm start     # Run with security disabled
+NODE_ENV=production npm start # Run production mode (default)
+
+Configuration Areas
+-------------------
+
+Server Configuration (config.server)
+  - port: 3000 (changeable)
+  - basePath: '' (API path prefix)
+  - baseUrl: 'http://localhost:3000' (public URL)
+  - ssl: {} (HTTPS configuration)
+  - compression: enabled
+  - helmet: security headers
+
+Application Configuration (config.application)
+  - name: 'OWASP Juice Shop'
+  - logo: Display logo file
+  - theme: Selected theme (bluegrey-lightgreen default)
+  - features: Enable/disable features (email, recycle, deluxe, etc.)
+  - domain: juice-sh.op (for email addresses)
+  - customMetricsPrefix: 'juiceshop' (Prometheus metrics prefix)
+
+Challenge Configuration (config.challenges)
+  - showHints: true/false
+  - showMitigations: true/false
+  - codingChallengesEnabled: 'never', 'solved', 'always'
+  - restrictToTutorialsFirst: true/false
+  - overwriteUrlForProductTamperingChallenge: URL override
+
+Google OAuth Configuration (config.application.googleOauth)
+  - clientId: Configured OAuth app ID
+  - authorizedRedirects: List of allowed callback URLs
+  - Includes localhost, 127.0.0.1, and remote URLs
+
+Chatbot Configuration (config.application.chatBot)
+  - name: 'Juicy' (bot name)
+  - trainingData: 'botDefaultTrainingData.json'
+  - defaultResponse: Response when bot can't understand
+  - avatar: Avatar image file
+
+Social Links Configuration (config.application.social)
+  - blueSkyUrl, mastodonUrl, twitterUrl, facebookUrl
+  - slackUrl, redditUrl, pressKitUrl, nftUrl
+
+Feature Flags
+-------------
+
+Email Verification: config.challenges.requireEmailVerification
+Local Backup: config.application.localBackupEnabled
+Deluxe Mode: config.application.deluxeUserMode
+Recycling Program: config.application.recyclePage
+Welcome Banner: config.application.welcomeBanner.showOnFirstStart
+Cookie Consent: config.application.cookieConsent
+
+Default Environment Variables
+-----------------------------
+
+NODE_ENV              Application environment (production, development)
+DEBUG                 Enable debug logging (DEBUG=*)
+PORT                  Override server port (default: 3000)
+DB_STORAGE_PATH       SQLite database path (default: data/juiceshop.sqlite)
+CONFIG_PROFILE        Override configuration profile
+
+Example .env File Template
+--------------------------
+
+NODE_ENV=development
+PORT=3000
+DEBUG=
+DB_STORAGE_PATH=./data/juiceshop.sqlite
+
+
+BUILD & DEPLOYMENT PROCESSES
+============================
+
+Development Commands Summary
+----------------------------
+
+Installation & Setup
+  npm install              # Install all dependencies (root + frontend)
+                          # Runs postinstall hook automatically
+
+Development Server
+  npm start                # Build & run production (compiles everything)
+  npm run serve            # Concurrent: backend (ts-node) + frontend (ng serve)
+  npm run serve:dev        # Concurrent with auto-reload (ts-node-dev)
+
+Building
+  npm run build:frontend   # Compile Angular (→ /frontend/dist/frontend)
+  npm run build:server     # Compile TypeScript (→ /build)
+  npm run postinstall      # Runs both builds (called automatically)
+
+Testing
+  npm test                 # Frontend tests + server tests (combined)
+  npm run test:chromium    # Frontend tests with Chromium
+  npm run test:server      # Mocha server tests with NYC coverage
+  npm run test:api         # Jest/Frisby API tests with NYC coverage
+  npm run cypress:open     # Interactive Cypress test runner
+  npm run cypress:run      # Headless Cypress with retries
+
+Code Quality
+  npm run lint             # Check all code with ESLint
+  npm run lint:fix         # Auto-fix linting issues
+  npm run lint:config      # Validate YAML configurations
+
+Packaging & SBOM
+  npm run package          # Create distributable packages
+  npm run package:ci       # CI packaging (pruned + deduped)
+  npm run sbom             # Generate Software Bill of Materials
+  npm run sbom:json        # CycloneDX JSON format
+  npm run sbom:xml         # CycloneDX XML format
+
+Security Notifications
+  npm run rsn              # Run Security Notification utility
+  npm run rsn:verbose      # With verbose output
+  npm run rsn:update       # Update notifications
+
+Build Pipeline
+--------------
+
+Step 1: npm install
+  - Installs root dependencies (package.json)
+  - Installs frontend dependencies (frontend/package.json)
+  - Automatically calls postinstall hook
+
+Step 2: postinstall hook (npm run postinstall)
+  - cd frontend && npm install (redundant but ensures consistency)
+  - cd frontend && npm run build (Angular CLI build)
+  - cd .. && npm run build:server (TypeScript compilation)
+
+Step 3: npm start
+  - Compiles if needed (runs tsc)
+  - Executes /build/app.js (compiled Node.js server)
+  - Serves frontend assets from /frontend/dist/frontend
+
+Frontend Build Output
+---------------------
+
+Command: npm run build:frontend
+
+Build Tool: Angular CLI 20.1.6 with custom webpack
+Input: /frontend/src/**/*
+Output: /frontend/dist/frontend/
+
+Build Features:
+  - AOT (Ahead-of-Time) compilation
+  - Tree-shaking of unused code
+  - Minification and uglification
+  - CSS/SCSS compilation
+  - Asset optimization
+  - Source maps for debugging
+
+Build Artifacts:
+  - Compiled JavaScript bundles
+  - CSS files
+  - Asset files (images, fonts)
+  - index.html with bundle references
+  - Source maps (.map files)
+  - SystemJS bundles (if applicable)
+
+Backend Build Output
+--------------------
+
+Command: npm run build:server
+
+Build Tool: TypeScript Compiler (tsc)
+Input: *.ts, routes/*.ts, models/*.ts, lib/*.ts, data/*.ts
+Output: /build/
+
+Output Structure (mirrors source):
+  /build/app.js           Compiled app.ts
+  /build/server.js        Compiled server.ts
+  /build/routes/          Compiled routes
+  /build/models/          Compiled models
+  /build/lib/             Compiled utilities
+  /build/data/            Compiled data initialization
+  /build/*.js.map         Source maps
+
+Build Features:
+  - Type checking and compilation
+  - Source map generation
+  - Target: ES2020 (Node.js 20+)
+  - Module format: CommonJS
+
+Production Build Sequence
+-------------------------
+
+1. Clone/prepare source code
+2. npm install                    # Install dependencies
+3. npm run build:frontend         # Build Angular SPA
+4. npm run build:server          # Compile TypeScript backend
+5. npm run sbom                  # Generate SBOM (optional)
+6. Optionally: npm run package   # Create distribution packages
+
+Run Production
+--------------
+npm start                # Runs /build/app.js
+
+
+CI/CD PIPELINE DETAILS
+======================
+
+GitLab CI/CD Configuration
+--------------------------
+
+File: ./.gitlab-ci.yml
+
+Template Used: Auto-DevOps.gitlab-ci.yml (GitLab managed)
+
+Configuration Variables:
+  SAST_EXCLUDED_PATHS: "frontend/src/assets/private/**"
+  TEST_DISABLED: "true"
+  DAST_DISABLED: "true"
+
+Note: SAST (Static Application Security Testing) is enabled but excludes
+private assets. Dynamic testing (DAST) is disabled.
+
+Typical Pipeline Stages (via Auto-DevOps)
+------------------------------------------
+
+1. Build Stage
+   - Compile frontend (Angular CLI)
+   - Compile backend (TypeScript)
+   - Build Docker image
+
+2. Test Stage
+   - Run unit tests (frontend, backend)
+   - Run API integration tests (Jest/Frisby)
+   - Run E2E tests (Cypress)
+   - Generate code coverage reports
+   - SAST scanning (excluded: frontend/src/assets/private/**)
+
+3. Deploy Stage
+   - Deploy to staging environment
+   - Deploy to production (if approved)
+
+Automated Checks
+  - Code compilation
+  - Type checking (TypeScript)
+  - Linting (ESLint)
+  - Unit test execution
+  - API test execution
+  - Security scanning (SAST)
+  - Code coverage analysis
+
+GitHub Actions
+--------------
+
+Alternative CI/CD workflow available in GitHub version
+
+Docker Build
+------------
+
+Dockerfile present in project root (multi-stage)
+
+Stage 1: Build Stage
+  - Base: Node.js image
+  - Install dependencies
+  - Build frontend (npm run build:frontend)
+  - Build backend (npm run build:server)
+
+Stage 2: Runtime Stage
+  - Base: Node.js runtime image
+  - Copy compiled /build directory
+  - Copy frontend /dist directory
+  - Copy /data (configuration, static data)
+  - EXPOSE 3000
+  - CMD ["node", "/juice-shop/build/app.js"]
+
+Docker Compose (Testing)
+  docker-compose -f docker-compose.test.yml up
+
+
+ROUTING STRUCTURE
+=================
+
+Frontend Routes (100+)
+-----------------------
+
+Defined in: /frontend/src/app/app.routing.ts
+
+Key Routes:
+  /
+    - Home/welcome page
+
+  /login
+    - User login form
+    - SQL injection vulnerability
+
+  /register
+    - User registration
+    - Email validation (optional)
+
+  /forgot-password
+    - Password reset via security questions
+    - Vulnerable security questions
+
+  /2fa
+    - Two-factor authentication setup
+
+  /products
+    - Product listing and browsing
+
+  /product/:id
+    - Product details page
+    - IDOR vulnerability
+
+  /basket
+    - Shopping basket view
+    - Basket manipulation
+
+  /checkout
+    - Order creation flow
+
+  /payment
+    - Payment information entry
+
+  /order-history
+    - View past orders
+
+  /score-board
+    - Challenge progress and leaderboard
+    - Filtering and statistics
+
+  /code-fixes
+    - Code fixing challenges
+    - Automated solution verification
+
+  /administration
+    - Admin panel (vulnerable)
+    - User management
+
+  /account
+    - User profile page
+    - Account settings
+
+  /privacy-policy
+    - Privacy policy page
+
+  /about
+    - About page
+
+  /contact
+    - Contact form
+
+  /web3-sandbox
+    - Web3/blockchain testing
+
+  /wallet-web3
+    - Ethereum wallet interface
+
+  /nft-unlock
+    - NFT minting and management
+
+  /deluxe-user
+    - Premium membership features
+
+  /photo-wall
+    - User-generated content gallery
+
+  /recycle
+    - Recycling program
+
+Route Guards & Authentication
+------------------------------
+
+Authentication Guard: Protects routes requiring login
+  - Checks valid JWT token
+  - Redirects to /login if not authenticated
+
+Authorization Guard: Checks user roles
+  - Admin routes: Requires admin role
+  - Premium routes: Requires premium membership
+
+Role-Based Access Control (RBAC)
+  - customer: Normal user access
+  - admin: Administrative access
+  - premium: Premium member features
+
+Route Metadata
+  - title: Page title
+  - description: Page description
+  - roles: Required roles for access
+  - requiresAuth: Authentication requirement flag
+
+
+ARCHITECTURAL PATTERNS
+======================
+
+Component Architecture
+----------------------
+
+Modular Feature-Based Structure:
+  - Components organized by feature area
+  - Smart (container) components at page level
+  - Dumb (presentational) components for UI
+  - Services handle business logic
+  - Models define data structures
+
+Component Hierarchy:
+  AppComponent (root)
+    ├─ NavbarComponent
+    ├─ SidenavComponent
+    ├─ RouterOutlet (page components)
+    │   ├─ LoginComponent
+    │   ├─ ProductDetailsComponent
+    │   ├─ BasketComponent
+    │   └─ [other page components]
+    └─ FooterComponent
+
+State Management Pattern
+------------------------
+
+Service-Based State (no NgRx):
+  1. Services maintain state using RxJS Subjects/BehaviorSubjects
+  2. Components subscribe to service Observables
+  3. Services expose methods to modify state
+  4. State changes propagate to all subscribers
+
+Example Pattern:
+  ```
+  // Service
+  private userSubject = new BehaviorSubject<User | null>(null);
+  user$ = this.userSubject.asObservable();
+
+  setUser(user: User) {
+    this.userSubject.next(user);
+  }
+
+  // Component
+  constructor(userService: UserService) {
+    this.userService.user$.subscribe(user => {
+      this.currentUser = user;
+    });
+  }
+  ```
+
+API Service Pattern
+-------------------
+
+HTTP Interceptor Pattern:
+  1. All HTTP requests routed through interceptor
+  2. Interceptor adds authentication tokens
+  3. Interceptor handles error responses
+  4. Service methods call HTTP client
+  5. Components subscribe to service Observables
+
+Request/Response Cycle:
+  Component → Service → HTTP Client → Interceptor → Server
+
+Error Handling in API:
+  - HTTP error codes mapped to user messages
+  - Global error handler in interceptor
+  - Snackbar notifications for errors
+  - Failed requests optionally retried
+
+Authentication Architecture
+----------------------------
+
+JWT Token-Based:
+  1. Login request sends credentials
+  2. Server responds with JWT token
+  3. Token stored in localStorage/sessionStorage
+  4. Token included in Authorization header
+  5. Token validated on each request
+  6. Token refreshed before expiration (if implemented)
+
+Token Storage:
+  - localStorage: Persistent across sessions
+  - sessionStorage: Cleared when browser closes
+  - Vulnerability: XSS can steal tokens
+
+Code Organization Principles
+----------------------------
+
+1. Feature-Based Modules:
+   - Group related components, services, models
+   - One feature per directory
+   - Encourages scalability
+
+2. Dependency Injection:
+   - All services injected via constructor
+   - Enables testing and loose coupling
+
+3. Single Responsibility:
+   - One component handles one view
+   - Services handle business logic
+   - Models define data structures
+
+4. Reactive Programming:
+   - RxJS Observables for asynchronous operations
+   - Reactive data binding in templates
+   - Unsubscribe to prevent memory leaks
+
+Security Practices Implemented
+------------------------------
+
+1. HTTPS/TLS:
+   - Helmet security headers
+   - HSTS (Strict-Transport-Security)
+   - CSP (Content-Security-Policy)
+
+2. Authentication & Authorization:
+   - JWT tokens for stateless auth
+   - Role-based access control
+   - Session management
+
+3. Input Validation (Mostly Missing - Intentional):
+   - Client-side validation (weak)
+   - Server-side validation (vulnerable)
+   - No sanitization of user input (intentional)
+
+4. Data Protection:
+   - HTTPS for data in transit
+   - Limited encryption at rest
+   - Sensitive data exposure (intentional vulnerabilities)
+
+5. API Security:
+   - Rate limiting on certain endpoints
+   - CORS configuration
+   - Exposed API documentation (vulnerable)
+
+Performance Optimizations Applied
+----------------------------------
+
+Frontend:
+  - Lazy loading of route modules
+  - OnPush change detection (some components)
+  - TrackBy functions for ngFor
+  - Code splitting via Angular CLI
+  - AOT compilation in production
+  - Tree-shaking to remove unused code
+  - Compression of bundle files
+  - Caching of static assets
+
+Backend:
+  - Data caching in /data/datacache.ts
+  - Compression middleware (gzip)
+  - Database connection pooling
+  - Eager loading for related data
+  - Optimized database queries
+  - Rate limiting to prevent abuse
+
+Testing Strategy
+----------------
+
+Unit Testing (Components & Services):
+  - Framework: Jasmine (frontend), Mocha (backend)
+  - Location: .spec.ts files
+  - Coverage: NYC reports
+  - Execution: npm test
+
+API Integration Testing:
+  - Framework: Jest + Frisby
+  - Location: /test/api/*Spec.ts
+  - Tests actual API behavior (including vulnerabilities)
+  - Coverage: NYC reports
+  - Execution: npm run test:api
+
+E2E Testing (User Workflows):
+  - Framework: Cypress
+  - Location: /test/cypress/e2e/*.spec.ts
+  - Tests complete user workflows
+  - Execution: npm run cypress:run or cypress:open
+  - Parallel execution with retries
+
+Coverage Reports:
+  - Generated by NYC (Istanbul)
+  - Output: /build/reports/coverage/
+  - Includes: lcov, html, text-summary formats
+
+
+API INTEGRATION FLOWS
+====================
+
+Request/Response Cycle
+----------------------
+
+1. Client sends HTTP request with:
+   - URL/endpoint
+   - HTTP method (GET, POST, PUT, DELETE)
+   - Headers (Content-Type, Authorization)
+   - Body (for POST/PUT)
+
+2. Server receives request:
+   - Middleware processes request
+   - Route handler executes
+   - Service layer handles business logic
+   - Database query executes
+   - Response prepared
+
+3. Server sends HTTP response:
+   - Status code (200, 400, 401, 500, etc.)
+   - Headers (Content-Type, etc.)
+   - Body (JSON data or error message)
+
+4. Client receives response:
+   - Interceptor processes response
+   - Status code checked for errors
+   - Data extracted and used by component
+   - Error handler notifies user if needed
+
+Authentication Flow
+-------------------
+
+Login Flow:
+  1. User enters username/email and password
+  2. POST /api/users/login with credentials
+  3. Server validates credentials (vulnerable)
+  4. Server generates JWT token
+  5. Token sent in response
+  6. Client stores token in localStorage
+  7. Subsequent requests include token in Authorization header
+
+Token Refresh Flow (if implemented):
+  1. Client checks token expiration time
+  2. If near expiration, requests new token
+  3. POST /api/users/refresh-token
+  4. Server generates new token
+  5. Client stores new token
+
+2FA Flow:
+  1. User enables 2FA in account settings
+  2. Server generates TOTP secret
+  3. User scans QR code with authenticator app
+  4. During login, user enters 2FA code
+  5. POST /api/2fa/verify with code
+  6. Server validates code
+  7. Login completes if code is valid
+
+Error Handling Approach
+-----------------------
+
+Frontend Error Handling:
+  - HTTP interceptor catches all responses
+  - Status codes >= 400 treated as errors
+  - Error message extracted from response
+  - Error shown to user via snackbar
+  - Failed requests logged to console
+  - Optional automatic retry logic
+
+Backend Error Handling:
+  - Try-catch blocks in route handlers
+  - Errors logged with winston logger
+  - Error responses sent as JSON:
+    {
+      "status": 400,
+      "message": "User not found"
+    }
+  - No stack traces sent to client
+  - 500 errors logged but generic message sent
+
+Interceptor Logic
+-----------------
+
+Request Interceptor:
+  1. Gets JWT token from storage
+  2. Adds Authorization header: "Bearer <token>"
+  3. Sets Content-Type to application/json
+  4. Forwards request to server
+
+Response Interceptor:
+  1. Checks response status
+  2. If 401 (Unauthorized):
+     - Token likely expired
+     - Redirect to login
+     - Clear stored token
+  3. If error status:
+     - Extract error message
+     - Show snackbar notification
+     - Throw error to component
+  4. If success:
+     - Return response data
+     - Component processes data
+
+
+KEY DEPENDENCIES & PURPOSES
+===========================
+
+Core Framework Dependencies
+---------------------------
+
+express: Web framework, routing, middleware
+typescript: Language for type-safe development
+sequelize: ORM for database models and queries
+angular: Frontend framework
+@angular/material: UI components library
+
+Database & ORM
+--------------
+
+sequelize: ORM for SQLite (21 models)
+  - User model: Authentication, profile data
+  - Product model: Product catalog
+  - Order model (MarsDB): Order history
+  - Challenge model: Security training challenges
+  - Basket model: Shopping cart
+  - Address model: Shipping addresses
+  - Payment Card model: Saved payment methods
+  - Feedback model: User feedback submissions
+  - [15 more models...]
+
+sqlite3: SQLite database driver
+marsdb: In-memory NoSQL collection storage
+
+API & HTTP
+-----------
+
+cors: Enable cross-origin requests
+body-parser: Parse JSON request bodies
+morgan: HTTP request logging
+compression: Gzip compression middleware
+multer: File upload handling
+swagger-ui-express: Swagger documentation UI
+finale-rest: Auto-generate REST endpoints
+
+Authentication & Security
+--------------------------
+
+jsonwebtoken: JWT token generation and verification
+bcrypt: Password hashing and comparison
+express-jwt: JWT middleware for route protection
+helmet: Security headers (CSP, HSTS, X-Frame-Options)
+express-rate-limit: Rate limiting middleware
+express-ipfilter: IP-based access control
+cookie-parser: Parse HTTP cookies
+i18n: Internationalization
+
+Utilities & Helpers
+-------------------
+
+config: Configuration management (profiles/environments)
+js-yaml: YAML parsing
+lodash-es: Utility functions
+colors: Colored console output
+file-stream-rotator: Log file rotation
+winston: Logging library
+joi: Data validation schemas
+
+Frontend Services (Custom)
+--------------------------
+
+UserService: Authentication and user profile
+ProductService: Product catalog operations
+BasketService: Shopping cart management
+ChallengeService: Challenge scoring and status
+PaymentService: Payment processing
+DeliveryService: Delivery method selection
+ConfigurationService: Dynamic configuration loading
+SocketIOService: Real-time WebSocket communication
+LocalBackupService: Client-side data export
+[30+ more services...]
+
+Monitoring & Metrics
+--------------------
+
+prom-client: Prometheus metrics collection
+  - HTTP request count/duration
+  - Custom business metrics
+  - Endpoint: GET /api/metrics
+
+Code Quality & Testing
+----------------------
+
+jest: API test framework
+mocha: Server unit test framework
+chai: Assertion library
+nyc: Code coverage reporting
+cypress: E2E testing framework
+jasmine: Angular component testing
+karma: Angular test runner
+sinon: Mocking and stubbing
+ts-node: TypeScript runtime
+ts-node-dev: Development mode with reload
+source-map-support: Better error traces
+
+Web3 & Blockchain
+-----------------
+
+ethers.js: Ethereum library for blockchain interaction
+web3.js: Web3 provider for smart contracts
+@wagmi/core: Web3 hooks and utilities
+
+Specialized Libraries
+---------------------
+
+socket.io: WebSocket real-time communication
+ngx-translate: Angular translation/i18n system
+jwt-decode: Decode JWT tokens in browser
+file-saver: Save files from browser
+jssha: SHA cryptographic hashing
+codemirror: Code editor widget
+codemirror-solidity: Solidity syntax highlighting
+canvas-confetti: Celebration animations
+ng-qrcode: QR code generation
+ng-gallery: Image gallery component
+@fortawesome: Font Awesome icons
+flag-icons: Country flag icons
+
+
+APPLICATION ENTRY FLOW
+======================
+
+Initialization Sequence
+-----------------------
+
+1. Process Start (Node.js)
+   node /build/app.js
+
+2. app.ts Execution
+   - Imports server module
+   - Calls server startup
+   - Establishes Express app
+
+3. server.ts Initialization (400+ lines)
+   - Load configuration (config module)
+   - Create Express application
+   - Initialize logging (winston)
+   - Set up middleware stack
+   - Initialize Sequelize database
+   - Load MarsDB collections
+   - Register route handlers (60+ routes)
+   - Start data population
+   - Listen on port 3000
+
+Application Bootstrap Process
+-----------------------------
+
+Express Setup:
+  1. Create Express app instance
+  2. Configure body parsing (JSON, form data)
+  3. Configure CORS
+  4. Set up compression
+  5. Initialize session management
+
+Middleware Stack (in order):
+  1. Security headers (helmet)
+  2. Request logging (morgan)
+  3. Body parsing (body-parser, json, urlencoded)
+  4. Cookie parsing (cookie-parser)
+  5. Compression (gzip)
+  6. Authentication (express-jwt on protected routes)
+  7. Rate limiting (on specific routes)
+  8. IP filtering (if enabled)
+  9. Request handling (route-specific handlers)
+  10. Error handling (error response middleware)
+
+Database Initialization:
+  1. Sequelize instance created
+  2. SQLite database connected
+  3. Models loaded and associations created
+  4. Database synced (creates tables if needed)
+  5. Data population begins (datacreator.ts)
+
+Data Population (on startup):
+  1. Load static data from YAML files
+  2. Load product catalog
+  3. Load pre-configured users
+  4. Load security challenges
+  5. Load translations (30+ languages)
+  6. Create MarsDB collections for reviews and orders
+  7. Cache data in memory
+
+Route Registration:
+  1. Load all route modules from /routes/
+  2. Register routes with Express app
+  3. Mount routes at /api prefix
+  4. Configure specific route authentication
+  5. Set up error handling for routes
+
+Server Listening:
+  1. Start HTTP server on port 3000
+  2. Print server ready message
+  3. Display access URLs
+  4. Monitor for shutdown signals
+
+Route Resolution Flow
+---------------------
+
+Request arrives:
+  1. URL parsed (e.g., GET /api/products/1)
+  2. HTTP method identified (GET)
+  3. Middleware chain processes request
+  4. Authentication checked (if protected route)
+  5. Specific route handler matched
+  6. Route parameters extracted (e.g., id=1)
+  7. Request body parsed (if POST/PUT)
+  8. Handler function executes
+  9. Business logic (in services) processes request
+  10. Database queries (via Sequelize) executed
+  11. Response prepared
+  12. Response sent back to client
+
+Component Mounting Order (Frontend)
+-----------------------------------
+
+Angular Bootstrap:
+  1. main.ts loads index.html
+  2. platformBrowserDynamic() creates platform
+  3. AppModule imported and boostrapped
+  4. AppComponent mounted to DOM
+
+AppComponent Initialization:
+  1. Constructor dependency injection
+  2. ngOnInit lifecycle hook
+  3. Load configuration from API
+  4. Load translations (i18n)
+  5. Check authentication status
+  6. Initialize router
+
+Router Navigation:
+  1. Current URL parsed
+  2. Route matched from routing rules
+  3. Route component instantiated
+  4. Component initialized
+  5. View rendered in RouterOutlet
+  6. ngOnInit called on component
+
+Component Initialization:
+  1. Constructor executes
+  2. Properties initialized
+  3. ngOnInit hook called
+  4. Services called to fetch data
+  5. View bound with data
+  6. Event listeners attached
+  7. Component rendered
+
+Dependency Injection:
+  1. Angular creates service instances
+  2. Passes services to component constructor
+  3. Component stores service references
+  4. Component uses services for data
+
+
+DEPLOYMENT CHECKLIST
+====================
+
+Pre-Deployment Verification
+---------------------------
+
+Code Quality:
+  ✓ npm run lint - No linting errors
+  ✓ npm run build:frontend - Frontend builds successfully
+  ✓ npm run build:server - Backend compiles successfully
+  ✓ npm test - All tests pass
+  ✓ npm run test:api - API tests pass
+  ✓ npm run cypress:run - E2E tests pass
+  ✓ npm run sbom - SBOM generated without errors
+
+Configuration:
+  ✓ NODE_ENV set appropriately
+  ✓ Server port configured
+  ✓ Database path validated
+  ✓ SSL/TLS certificates in place (if HTTPS)
+  ✓ All config values checked in /config/default.yml
+  ✓ Environment variables validated
+
+Dependencies:
+  ✓ npm install completed successfully
+  ✓ All critical dependencies installed
+  ✓ No known security vulnerabilities
+  ✓ package-lock.json in version control
+
+Database:
+  ✓ SQLite database initialized
+  ✓ All migrations/schema sync completed
+  ✓ Data population successful
+  ✓ Database backups created (if applicable)
+
+Security:
+  ✓ No hardcoded credentials in code
+  ✓ Encryption keys configured
+  ✓ HTTPS enabled (production)
+  ✓ CORS configured appropriately
+  ✓ Rate limiting enabled
+  ✓ Security headers configured (helmet)
+  ✓ JWT secret configured
+  ✓ Admin credentials changed from defaults
+
+Staging Deployment Steps
+------------------------
+
+1. Prepare Staging Environment
+   - Clone/deploy code to staging server
+   - Create staging database
+   - Set NODE_ENV=staging (or production with staging config)
+   - Configure staging domain/URLs
+   - Set up logging to staging log files
+
+2. Run Deployment Build
+   npm install --production
+   npm run build:frontend
+   npm run build:server
+
+3. Database Setup
+   - Initialize SQLite database
+   - Run data population
+   - Verify all tables created
+   - Check data loaded correctly
+
+4. Start Application
+   npm start                # Runs /build/app.js
+   # Or via process manager: pm2 start /build/app.js
+
+5. Verify Functionality
+   - Check server logs for errors
+   - Access staging URL in browser
+   - Test login functionality
+   - Test product browsing
+   - Test shopping/checkout flow
+   - Test API endpoints directly
+
+6. Run Tests on Staging
+   - Run smoke tests
+   - Test critical workflows
+   - Verify database connectivity
+   - Check file uploads working
+   - Verify rate limiting
+   - Test error handling
+
+7. Security Validation
+   - Verify HTTPS configured
+   - Check security headers present
+   - Test authentication/authorization
+   - Verify no sensitive data exposed
+   - Run security tool scans
+   - Check CORS headers correct
+
+Production Deployment Steps
+---------------------------
+
+1. Backup Current State
+   - Backup database if existing
+   - Backup configuration files
+   - Document current version
+   - Have rollback plan ready
+
+2. Prepare Production Environment
+   - Clone/deploy code to production server
+   - Set NODE_ENV=production
+   - Configure production domain/URLs
+   - Update API endpoints in config
+
+3. Install & Build
+   npm install --production
+   npm run build:frontend
+   npm run build:server
+
+4. Database Setup
+   - Initialize/migrate database
+   - Run data population
+   - Verify integrity
+
+5. Configure Reverse Proxy (if using)
+   - nginx, Apache, or other reverse proxy
+   - HTTPS/TLS termination
+   - Port forwarding (80,443 → 3000)
+   - Load balancing (if multiple instances)
+
+6. Configure Process Manager (Recommended)
+   Option A: PM2
+     npm install -g pm2
+     pm2 start /build/app.js --name "juice-shop"
+     pm2 startup
+     pm2 save
+
+   Option B: systemd
+     Create /etc/systemd/system/juice-shop.service
+     Configure ExecStart, User, WorkingDirectory
+     systemctl enable juice-shop
+     systemctl start juice-shop
+
+7. Start Application
+   - Via process manager (recommended)
+   - Or directly: node /build/app.js
+   - Monitor logs for startup errors
+
+8. Health Checks
+   curl http://localhost:3000        # Check server responding
+   curl http://localhost:3000/api/... # Test API endpoints
+   # Verify frontend loads at /
+   # Check /api/metrics endpoint accessible
+
+9. Post-Deployment Validation
+   - Access production URL in browser
+   - Test critical user workflows
+   - Verify database populated
+   - Check logs for errors
+   - Monitor server resources (CPU, memory, disk)
+   - Verify backups working
+
+10. Monitoring & Logging Setup
+    - Configure log rotation
+    - Set up monitoring/alerting
+    - Configure error tracking (Sentry, etc.)
+    - Set up performance monitoring
+    - Configure uptime monitoring
+
+11. Documentation & Communication
+    - Update deployment documentation
+    - Notify team of production deployment
+    - Document any configuration changes
+    - Create/update runbooks
+
+Rollback Procedure
+------------------
+
+If deployment fails:
+  1. Identify issue from logs
+  2. Stop production application: pm2 stop juice-shop
+  3. Restore previous version from backup
+  4. Restore previous database (if changed)
+  5. Restart application
+  6. Verify functionality
+  7. Investigate root cause
+  8. Fix issue before next deployment
+
+
+====================
+End of Technical Documentation
+====================

@@ -1,0 +1,58 @@
+# Session Handoff Log
+# Purpose: Track session endings and prepare for next session startup
+# Usage: Update this at the END of each session
+
+=== Session End: YYYY-MM-DD HH:MM ===
+
+Session Duration: [X hours Y minutes]
+
+What was accomplished:
+- [Completed item 1]
+- [Completed item 2]
+- [Completed item 3]
+
+Files created/modified:
+- [Filename]: [What changed]
+- [Filename]: [What changed]
+
+Tests/Validation performed:
+- [Test 1]: [Result]
+- [Test 2]: [Result]
+
+Current blockers:
+- [Blocker 1 or "NONE"]
+- [Blocker 2 or "NONE"]
+
+Next session should start with:
+1. Read CURRENT_STATE.txt
+2. Read SESSION_HANDOFF.txt
+3. Review: [Specific files/sections]
+4. Continue with: [Specific task/phase]
+
+Files to reference:
+- [File]: [Purpose - e.g., "Implementation plan"]
+- [File]: [Purpose - e.g., "Current codebase"]
+
+Critical reminders for next session:
+- [Reminder about environment/credentials]
+- [Reminder about constraints]
+- [Reminder about decisions made]
+
+Open questions to address:
+- [Question 1]
+- [Question 2]
+
+---
+
+=== Session: YYYY-MM-DD ===
+[Keep 3-5 most recent sessions for history]
+
+Accomplished: [Summary]
+Next: [What's next]
+
+---
+
+=== Session: YYYY-MM-DD ===
+[Previous session]
+
+---

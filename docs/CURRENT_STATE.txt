@@ -1,0 +1,43 @@
+Last Updated: 2025-11-27 00:00
+Current Project: owasp-juice-shop-demo
+Active Phase: Not started
+
+=== QUICK CONTEXT ===
+Working on: [Brief description of what you're building]
+Key Services: [List main services/components]
+Access Method: [How to access resources - AWS profile, SSH, API keys, etc.]
+Environment: [Development/Staging/Production]
+
+=== COMPLETED RECENTLY ===
+- [Task completed]
+- [Another completed task]
+
+=== IN PROGRESS ===
+- [Current active work]
+- Status: [Progress/blockers]
+
+=== NEXT SESSION ===
+Start with: [What to do when resuming work]
+First task: [Specific next task]
+Files to read:
+  - [Filename with line numbers if applicable]
+  - [Another file]
+
+=== IMPORTANT NOTES ===
+- [Critical constraint or requirement]
+- [Security/access consideration]
+- [Environment-specific info]
+
+=== FILE LOCATIONS ===
+Config files: [Path]
+Scripts: [Path]
+Data/Artifacts: [Path]
+Documentation: [Path]
+
+=== CREDENTIALS & ACCESS ===
+Note: Never store actual credentials here - only references
+- AWS Profile: [Profile name or "See ~/.aws/credentials"]
+- Database: [Connection info location or Secrets Manager path]
+- APIs: [Where keys are stored]
+
+---

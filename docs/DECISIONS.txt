@@ -1,0 +1,95 @@
+# Technical Decisions Log
+# Purpose: Document WHY choices were made, not just WHAT
+# Usage: Add entry whenever making architectural or technical decision
+
+Project: owasp-juice-shop-demo
+Last Updated: 2025-11-27
+
+=== How to Use This File ===
+When making a decision, document:
+1. What was decided
+2. Why this choice (context/requirements)
+3. Alternatives considered
+4. Trade-offs accepted
+5. When to revisit
+
+---
+
+=== DECISION TEMPLATE (Copy this for new entries) ===
+
+Decision: [Clear statement of what was decided]
+Date: YYYY-MM-DD
+Category: [Architecture/Technology/Process/Security/Performance]
+
+Context & Requirements:
+- [Requirement 1]
+- [Requirement 2]
+
+Chosen Solution:
+[Describe the solution/approach selected]
+
+Alternatives Considered:
+1. [Alternative 1]: Rejected because [reason]
+2. [Alternative 2]: Rejected because [reason]
+
+Trade-offs Accepted:
++ Pros: [Benefits of this choice]
+- Cons: [Drawbacks we're accepting]
+
+Impact:
+- Affected components: [List]
+- Migration needed: [Yes/No - details]
+- Dependencies added: [List]
+
+Review/Revisit:
+- When: [Condition or date to reconsider]
+- Why: [What might change this decision]
+
+---
+
+=== Active Decisions ===
+
+[Your project decisions will be documented here]
+
+---
+
+=== Technical Constraints ===
+# Non-negotiable constraints for this project
+
+Constraint: [Description]
+Reason: [Why this constraint exists]
+Impact: [How it affects design]
+
+---
+
+=== Patterns & Standards ===
+# Coding patterns, naming conventions, architectural patterns
+
+Pattern: [Name]
+Where: [Which parts of codebase]
+Why: [Reason for this pattern]
+Example: [Code or file reference]
+
+---
+
+=== Technology Stack ===
+# Key technologies and WHY they were chosen
+
+Technology: [Name - e.g., PostgreSQL]
+Version: [Version number]
+Purpose: [What it's used for]
+Why chosen: [Reason over alternatives]
+Alternatives considered: [List with brief why not]
+
+---
+
+=== Dependencies ===
+# Major dependencies and justification
+
+Dependency: [Package/library name]
+Version: [Version or range]
+Purpose: [What it does]
+Why this one: [Why not alternatives]
+Risk: [Any concerns about this dependency]
+
+---

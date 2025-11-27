@@ -1,0 +1,121 @@
+# Known Issues & Workarounds
+# Purpose: Track problems, bugs, and their solutions
+# Usage: Add issues as discovered, update when resolved
+
+Project: owasp-juice-shop-demo
+Last Updated: 2025-11-27
+
+=== How to Use This File ===
+- Add new issues to "Active Issues" section
+- Move to "Resolved" when fixed
+- Keep "Common Errors" updated as a reference
+
+---
+
+=== ISSUE TEMPLATE (Copy for new issues) ===
+
+Issue #[number]: [Brief descriptive title]
+Severity: [Critical/High/Medium/Low]
+Impact: [What breaks or doesn't work]
+Environment: [Where it occurs - dev/staging/prod/all]
+First seen: YYYY-MM-DD
+
+Description:
+[Detailed description of the problem]
+
+Reproduction steps:
+1. [Step 1]
+2. [Step 2]
+3. [Observe problem]
+
+Workaround:
+[Temporary solution if available, or "NONE"]
+
+Root cause:
+[If known, describe the underlying cause]
+
+Permanent fix needed:
+[What needs to happen to truly resolve this]
+
+Status: [Open/In Progress/Blocked/Need Info]
+Assigned to: [Person or "Unassigned"]
+Related issues: [Links to related issues]
+
+---
+
+=== Active Issues ===
+
+[Current problems will be tracked here]
+
+---
+
+=== Resolved Issues ===
+
+Issue: [Title]
+Resolution: [What fixed it]
+Date resolved: YYYY-MM-DD
+Lessons learned: [What we learned from this]
+Prevention: [How to avoid in future]
+
+---
+
+=== Environment-Specific Issues ===
+# Problems that only occur in certain environments
+
+Environment: [Dev/Staging/Production]
+Issue: [Description]
+Cause: [Why it happens in this env]
+Workaround: [How to handle it]
+
+---
+
+=== Common Errors & Solutions ===
+# Quick reference for frequently encountered errors
+
+Error Message: [Exact error text or pattern]
+Cause: [What causes this error]
+Solution: [How to fix it]
+Prevention: [How to avoid it]
+
+---
+
+Error Message: [Another common error]
+Cause: [What causes it]
+Solution: [Fix]
+Command: [Exact command to run]
+
+---
+
+=== Performance Issues ===
+
+Component: [Service/module/function]
+Symptom: [Slow response, high CPU, etc.]
+Threshold: [What's the acceptable performance]
+Current: [Current performance]
+Optimization needed: [What to try]
+Status: [Open/In Progress/Resolved]
+
+---
+
+=== Security Concerns ===
+# Security-related issues or considerations
+
+Concern: [Description]
+Severity: [Critical/High/Medium/Low]
+Mitigation: [Current mitigation if any]
+Long-term fix: [What's needed]
+Compliance: [If related to compliance requirement]
+
+---
+
+=== Technical Debt ===
+# Things that work but need refactoring
+
+Item: [Description]
+Location: [File/module]
+Why debt: [Why it's suboptimal]
+Impact: [How it affects development]
+Effort to fix: [Estimated effort]
+Priority: [High/Medium/Low]
+
+---
