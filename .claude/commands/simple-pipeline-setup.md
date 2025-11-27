@@ -128,7 +128,7 @@ cat .github/workflows/simple-pipeline.yml | grep -E "jobs:|needs:|upload-artifac
 
 **Ask**:
 
-1. "What is your Docker Hub username? (default: rupeedev)"
+1. "What is your Docker Hub username? (default: koonliang)"
 2. "What should we name the Docker repository? (default: owasp-juice-shop)"
 
 ### Add Stage 4 to Workflow
@@ -150,7 +150,7 @@ Open the file and add this at the END (after the build job):
     runs-on: ubuntu-latest
     needs: build
     env:
-      DOCKER_USERNAME: rupeedev  # ← Change to your username
+      DOCKER_USERNAME: koonliang  # ← Change to your username
       DOCKER_REPO: owasp-juice-shop  # ← Change to your repo name
     steps:
       - name: Checkout code
